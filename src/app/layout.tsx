@@ -2,6 +2,7 @@ import Providers from "@/components/providers";
 import { SITE } from "@/config";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
+import { Toaster } from "@/ui/toaster";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
@@ -38,6 +39,7 @@ export default function RootLayout({
         <Providers>
           <NextTopLoader height={5} />
           {children}
+          <Toaster />
         </Providers>
       </body>
     </html>
