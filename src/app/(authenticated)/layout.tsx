@@ -16,15 +16,15 @@ const layout: FC<layoutProps> = ({ children }) => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
       <Navbar />
 
       <div className="flex-1">
-        <div className="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10 lg:pl-0">
+        <div className="container flex-1 items-start lg:grid md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10 lg:pl-0">
           <Suspense>
             <Sidebar />
           </Suspense>
-          <main className="py-6 sm:p-10">{children}</main>
+          <main className="py-6 space-y-4 sm:p-10">{children}</main>
         </div>
       </div>
     </div>
