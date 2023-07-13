@@ -69,7 +69,7 @@ export const sidebarConfig: SidebarConfig = {
       items: [
         {
           title: "Pengaturan Akun",
-          href: "/dashboard/settings",
+          href: "/dashboard/account/settings",
           items: [],
         },
       ],
