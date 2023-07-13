@@ -38,12 +38,12 @@ export const sidebarConfig: SidebarConfig = {
         },
         {
           title: "Peminjaman Buku",
-          href: "/dashboard/book-loans",
+          href: "/dashboard/books-loans",
           items: [],
         },
         {
           title: "Riwayat Peminjaman Buku",
-          href: "/dashboard/book-loans-history",
+          href: "/dashboard/books-loans-history",
           items: [],
         },
         {
@@ -54,12 +54,12 @@ export const sidebarConfig: SidebarConfig = {
         },
         {
           title: "Peminjaman Ruangan",
-          href: "/dashboard/room-loans",
+          href: "/dashboard/rooms-loans",
           items: [],
         },
         {
           title: "Riwayat Peminjaman Ruangan",
-          href: "/dashboard/room-loans-history",
+          href: "/dashboard/rooms-loans-history",
           items: [],
         },
       ],
@@ -70,11 +70,6 @@ export const sidebarConfig: SidebarConfig = {
         {
           title: "Pengaturan Akun",
           href: "/dashboard/settings",
-          items: [],
-        },
-        {
-          title: "Ganti Password",
-          href: "/dashboard/change-password",
           items: [],
         },
       ],
