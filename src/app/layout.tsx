@@ -3,6 +3,7 @@ import { SITE } from "@/config";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { Toaster } from "@/ui/toaster";
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
@@ -28,20 +29,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={cn(
-        "motion-safe:scroll-smooth bg-white antialiased",
-        inter.className
-      )}
-    >
-      <body className="min-h-screen antialiased bg-zinc-50 dark:bg-zinc-900">
-        <Providers>
-          <NextTopLoader height={5} />
-          {children}
-          <Toaster />
-        </Providers>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html
+        lang="en"
+        className={cn(
+          "motion-safe:scroll-smooth bg-white antialiased",
+          inter.className
+        )}
+      >
+        <body className="min-h-screen antialiased bg-zinc-50 dark:bg-zinc-900">
+          <Providers>
+            <NextTopLoader height={5} />
+            {children}
+            <Toaster />
+          </Providers>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
