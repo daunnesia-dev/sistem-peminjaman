@@ -1,11 +1,14 @@
 import { NavbarMobile } from "@/components/dashboard/navbar-mobile";
+import UserButton from "@/components/dashboard/user-button";
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/button";
-import { UserButton } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { FC, Suspense } from "react";
 
-const Navbar: FC = () => {
+const Navbar: FC = async () => {
+  const user = await currentUser();
+
   return (
     <header className="sticky top-0 left-0 right-0 z-50 flex items-center h-20 border-b backdrop-blur-sm bg-slate-50 dark:bg-slate-900 border-slate-300 dark:border-slate-700">
       <div className={cn("container flex items-center justify-between w-full")}>
@@ -25,12 +28,9 @@ const Navbar: FC = () => {
           </Suspense>
         </div>
 
-        <div className="items-center justify-center hidden gap-4 lg:flex">
+        <div className="hidden lg:block">
           <Suspense>
-            <UserButton
-              userProfileMode="navigation"
-              userProfileUrl="/dashbord/settings"
-            />
+            <UserButton user={user} />
           </Suspense>
         </div>
       </div>
