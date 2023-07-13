@@ -12,7 +12,7 @@ export default function Sidebar() {
   return (
     <aside
       id="sidebar"
-      className="fixed z-30 hidden h-[calc(100vh-3.5rem)] w-full bg-slate-50 dark:bg-slate-900 border-r top-20 shrink-0 lg:sticky lg:block border-slate-300 dark:border-slate-700"
+      className="fixed z-30 hidden h-[calc(100vh-3.5rem)] w-full bg-zinc-50 dark:bg-zinc-900 border-r top-20 shrink-0 lg:sticky lg:block border-zinc-300 dark:border-zinc-700"
     >
       <ScrollArea className="h-full py-6 pr-6 lg:pl-8 lg:py-8">
         {sidebarConfig.sidebarNav.length ? (

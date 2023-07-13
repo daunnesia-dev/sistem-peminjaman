@@ -31,7 +31,7 @@ const NavbarMobileItem: FC<NavbarMobileItemProps> = ({
                   className={cn(
                     "group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:underline",
                     item.href === pathname
-                      ? "font-medium text-foreground bg-slate-200 dark:bg-slate-800"
+                      ? "font-medium text-foreground bg-zinc-200 dark:bg-zinc-800"
                       : "text-muted-foreground"
                   )}
                 >
@@ -51,7 +51,7 @@ const NavbarMobileItem: FC<NavbarMobileItemProps> = ({
               className={cn(
                 "group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:underline",
                 item.href === pathname
-                  ? "font-medium text-foreground bg-slate-200 dark:bg-slate-800"
+                  ? "font-medium text-foreground bg-zinc-200 dark:bg-zinc-800"
                   : "text-muted-foreground"
               )}
             >

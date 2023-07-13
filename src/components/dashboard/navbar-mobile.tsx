@@ -39,7 +39,7 @@ export function NavbarMobile() {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className={cn("border-slate-300 dark:border-slate-700 pr-0")}
+        className={cn("border-zinc-300 dark:border-zinc-700 pr-0")}
       >
         <MobileLink
           href="/dashboard"
