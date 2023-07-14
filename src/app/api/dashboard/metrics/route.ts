@@ -1,5 +1,8 @@
 import { db } from "@/lib/db";
-import { ApiAdminResponseValidator } from "@/lib/validator/dashboard/metrics/api";
+import {
+  ApiAdminResponseValidator,
+  ApiMemberResponseValidator,
+} from "@/lib/validator/dashboard/metrics/api";
 import { currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -15,10 +18,10 @@ export const GET = async (req: NextRequest) => {
 
   if (role === "admin") {
     try {
-      const books_count = db.book.count();
-      const rooms_count = db.room.count();
-      const books_loans_count = db.loanBook.count();
-      const rooms_loans_count = db.loanRoom.count();
+      const books_count = await db.book.count();
+      const rooms_count = await db.room.count();
+      const books_loans_count = await db.loanBook.count();
+      const rooms_loans_count = await db.loanRoom.count();
       const response = ApiAdminResponseValidator.parse({
         error: null,
         data: {
@@ -48,13 +51,13 @@ export const GET = async (req: NextRequest) => {
     }
   } else {
     try {
-      const books_loans_count = db.loanBook.count({
+      const books_loans_count = await db.loanBook.count({
         where: { userId: user.id },
       });
-      const rooms_loans_count = db.loanRoom.count({
+      const rooms_loans_count = await db.loanRoom.count({
         where: { userId: user.id },
       });
-      const response = ApiAdminResponseValidator.parse({
+      const response = ApiMemberResponseValidator.parse({
         error: null,
         data: {
           books_loans_count,
