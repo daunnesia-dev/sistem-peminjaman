@@ -30,7 +30,7 @@ const Navbar: FC = async () => {
 
         <div className="hidden lg:block">
           <Suspense>
-            <UserButton user={user} />
+            <UserButton user={JSON.parse(JSON.stringify(user))} />
           </Suspense>
         </div>
       </div>
