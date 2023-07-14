@@ -1,7 +1,9 @@
 "use client";
 
 import { charCounter } from "@/helpers/char-counter";
+import { updateInformation } from "@/helpers/dashboard/account/settings/update-information";
 import { cn } from "@/lib/utils";
+import { formSchema } from "@/lib/validator/dashboard/account/settings/api";
 import { Badge } from "@/ui/badge";
 import { Button } from "@/ui/button";
 import {
@@ -14,57 +16,14 @@ import {
 } from "@/ui/form";
 import { Input } from "@/ui/input";
 import { Textarea } from "@/ui/textarea";
+import { toast } from "@/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDebouncedValue } from "@mantine/hooks";
-import { CheckCircledIcon } from "@radix-ui/react-icons";
-import { FC, useState } from "react";
+import { CheckCircledIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
+import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
-const formSchema = z.object({
-  // main fields
-  firstName: z
-    .string()
-    .min(2, {
-      message: "Nama depan minimal 2 karakter",
-    })
-    .max(50, {
-      message: "Nama depan maksimal 50 karakter",
-    }),
-  lastName: z
-    .string()
-    .min(2, {
-      message: "Nama depan minimal 2 karakter",
-    })
-    .max(50, {
-      message: "Nama depan maksimal 50 karakter",
-    }),
-  email: z.string().email(),
-  phoneNumber: z
-    .string()
-    .min(10, {
-      message: "Nomor telepon minimal 10 karakter",
-    })
-    .max(15, {
-      message: "Nomor telepon maksimal 15 karakter",
-    })
-    .startsWith("08", {
-      message: "Nomor telepon harus diawali dengan 08",
-    })
-    .regex(/^[0-9]*$/, {
-      message: "Nomor telepon hanya menerima karakter numerik",
-    }),
-
-  // Metadata
-  address: z
-    .string()
-    .min(10, {
-      message: "Alamat minimal 10 karakter",
-    })
-    .max(150, {
-      message: "Alamat maksimal 150 karakter",
-    }),
-});
 
 interface FormSettingsProps {
   user: any;
@@ -82,6 +41,8 @@ const FormSettings: FC<FormSettingsProps> = ({ user }) => {
   const [disabledEmail] = useState(true);
   const [address, setAddress] = useState(user.publicMetadata.address ?? "");
   const [debounced] = useDebouncedValue(address, 200);
+  const { isSuccess, mutate, isLoading, isError } = updateInformation(user.id);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -106,8 +67,28 @@ const FormSettings: FC<FormSettingsProps> = ({ user }) => {
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    mutate(values);
+    setTimeout(() => {
+      router.refresh();
+    }, 200);
   }
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        title: "Success",
+        description: "Informasi akun berhasil diperbarui",
+      });
+    }
+
+    if (isError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat memperbarui informasi akun",
+      });
+    }
+  }, [isSuccess, isError]);
 
   return (
     <Form {...form}>
@@ -244,7 +225,10 @@ const FormSettings: FC<FormSettingsProps> = ({ user }) => {
         />
 
         <div className="flex justify-end">
-          <Button type="submit">Simpan Perubahan</Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading && <ReloadIcon className="w-4 h-4 mr-2 animate-spin" />}
+            Simpan Perubahan
+          </Button>
         </div>
       </form>
     </Form>
