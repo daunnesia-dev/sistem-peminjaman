@@ -1,7 +1,6 @@
 "use client";
 
 import DeleteButton from "@/components/dashboard/rooms/delete-button";
-import EditButton from "@/components/dashboard/rooms/edit-button";
 import { createRoomsProps } from "@/lib/validator/dashboard/rooms/api";
 import { Button } from "@/ui/button";
 import {
@@ -39,7 +38,7 @@ export function DataTableRowActions<TData>({
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuGroup onClick={() => setOpen(true)}>
           <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Hapus</DropdownMenuItem>
+          <DeleteButton id={room.id} name={room.name} setOpen={setOpen} />
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
