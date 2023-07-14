@@ -19,13 +19,13 @@ export const DELETE = async (
   }
 
   const role = user?.publicMetadata.role;
-  const id = params.id;
+  const id = parseInt(params.id.toString());
 
   if (role === "admin") {
     try {
       await db.category.delete({
         where: {
-          id,
+          id: id,
         },
       });
 
