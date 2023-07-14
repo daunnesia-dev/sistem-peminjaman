@@ -10,7 +10,7 @@ interface SidebarItemProps {
 
 export default function SidebarItem({ items, pathname }: SidebarItemProps) {
   const user = useUser();
-  const role = user.user?.unsafeMetadata.role;
+  const role = user.user?.publicMetadata.role;
 
   return items.length ? (
     <div className="grid grid-flow-row text-sm auto-rows-max">
