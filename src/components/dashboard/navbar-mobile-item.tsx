@@ -30,7 +30,7 @@ const NavbarMobileItem: FC<NavbarMobileItemProps> = ({
                   onOpenChange={setOpen}
                   className={cn(
                     "group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:underline",
-                    item.href === pathname
+                    pathname === item.href || item.subHref?.includes(pathname)
                       ? "font-medium text-foreground bg-zinc-200 dark:bg-zinc-800"
                       : "text-muted-foreground"
                   )}
@@ -50,7 +50,7 @@ const NavbarMobileItem: FC<NavbarMobileItemProps> = ({
               onOpenChange={setOpen}
               className={cn(
                 "group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:underline",
-                item.href === pathname
+                pathname === item.href || item.subHref?.includes(pathname)
                   ? "font-medium text-foreground bg-zinc-200 dark:bg-zinc-800"
                   : "text-muted-foreground"
               )}

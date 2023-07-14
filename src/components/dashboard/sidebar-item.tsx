@@ -23,7 +23,7 @@ export default function SidebarItem({ items, pathname }: SidebarItemProps) {
               className={cn(
                 "group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:underline",
                 item.disabled && "cursor-not-allowed opacity-60",
-                pathname === item.href
+                pathname === item.href || item.subHref?.includes(pathname)
                   ? "font-medium text-foreground bg-zinc-200 dark:bg-zinc-800"
                   : "text-muted-foreground"
               )}
@@ -62,7 +62,7 @@ export default function SidebarItem({ items, pathname }: SidebarItemProps) {
               className={cn(
                 "group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:underline",
                 item.disabled && "cursor-not-allowed opacity-60",
-                pathname === item.href
+                pathname === item.href || item.subHref?.includes(pathname)
                   ? "font-medium text-foreground bg-zinc-200 dark:bg-zinc-800"
                   : "text-muted-foreground"
               )}

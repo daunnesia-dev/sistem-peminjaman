@@ -40,6 +40,7 @@ export const sidebarConfig: SidebarConfig = {
         {
           title: "Master Buku",
           href: "/dashboard/books",
+          subHref: ["/dashboard/books/create", "/dashboard/books/edit/:id"],
           items: [],
           role: "admin",
         },
