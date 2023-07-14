@@ -2,15 +2,22 @@ import { z } from "zod";
 
 export const createCategoriesProps = z.object({
   id: z.string(),
-  name: z.string(),
+  name: z
+    .string()
+    .nonempty({ message: "Nama kategori tidak boleh kosong" })
+    .min(2, { message: "Nama kategori minimal 2 karakter" })
+    .max(50, { message: "Nama kategori maksimal 50 karakter" }),
 });
+
+export const ApiCategoriesRequestValidator = createCategoriesProps;
+export const categoryFormSchema = createCategoriesProps;
 
 export const ApiCategoriesResponseValidator = z.object({
   error: z.string().nullable(),
   data: z.array(createCategoriesProps),
 });
 
-export const APICategoriesDeleteResponseValidator = z.object({
+export const ApiCategoriesDeleteResponseValidator = z.object({
   error: z.string().nullable(),
   data: z.string(),
 });
