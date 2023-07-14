@@ -27,7 +27,7 @@ const LogoutBtn: FC = () => {
           <AlertDialogTitle>Apakah kamu yakin?</AlertDialogTitle>
           <AlertDialogDescription>
             Setelah kamu keluar, kamu harus masuk kembali untuk melihat halaman
-            eventmu.
+            dashboard.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
