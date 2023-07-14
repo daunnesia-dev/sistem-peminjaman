@@ -26,6 +26,12 @@ export const sidebarConfig: SidebarConfig = {
       title: "Master Data",
       items: [
         {
+          title: "Master Kategori Buku",
+          href: "/dashboard/book-categories",
+          items: [],
+          role: "admin",
+        },
+        {
           title: "Master Buku",
           href: "/dashboard/books",
           items: [],
