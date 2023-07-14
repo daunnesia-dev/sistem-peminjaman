@@ -32,6 +32,12 @@ export const sidebarConfig: SidebarConfig = {
           role: "admin",
         },
         {
+          title: "Master Status",
+          href: "/dashboard/statuses",
+          items: [],
+          role: "admin",
+        },
+        {
           title: "Data Buku",
           href: "/dashboard/books-data",
           items: [],
