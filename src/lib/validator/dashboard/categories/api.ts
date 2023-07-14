@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createCategoriesProps = z.object({
-  id: z.string(),
+  id: z.number(),
   name: z
     .string()
     .nonempty({ message: "Nama kategori tidak boleh kosong" })
@@ -9,8 +9,14 @@ export const createCategoriesProps = z.object({
     .max(50, { message: "Nama kategori maksimal 50 karakter" }),
 });
 
-export const ApiCategoriesRequestValidator = createCategoriesProps;
-export const categoryFormSchema = createCategoriesProps;
+export const categoryFormSchema = z.object({
+  name: z
+    .string()
+    .nonempty({ message: "Nama kategori tidak boleh kosong" })
+    .min(2, { message: "Nama kategori minimal 2 karakter" })
+    .max(50, { message: "Nama kategori maksimal 50 karakter" }),
+});
+export const ApiCategoriesRequestValidator = categoryFormSchema;
 
 export const ApiCategoriesResponseValidator = z.object({
   error: z.string().nullable(),
