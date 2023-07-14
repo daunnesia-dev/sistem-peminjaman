@@ -14,6 +14,16 @@ export const POST = async (req: NextRequest) => {
   if (role === "admin") {
     try {
       const { name } = ApiCategoriesRequestValidator.parse(body);
+      const isExistCategory = await db.category.findFirst({
+        where: {
+          name,
+        },
+      });
+
+      if (isExistCategory) {
+        return NextResponse.json("Duplicate entry", { status: 409 });
+      }
+
       const categories = await db.category.create({
         data: {
           name,

@@ -25,6 +25,16 @@ export const PUT = async (
     try {
       const body = await req.json();
       const { name } = ApiCategoriesRequestValidator.parse(body);
+      const isExistCategory = await db.category.findFirst({
+        where: {
+          name,
+        },
+      });
+
+      if (isExistCategory) {
+        return NextResponse.json("Duplicate entry", { status: 409 });
+      }
+
       const category = await db.category.update({
         where: {
           id: id,
