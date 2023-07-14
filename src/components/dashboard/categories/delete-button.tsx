@@ -57,9 +57,7 @@ const DeleteButton = ({ id, name, setOpen }: DeleteProps) => {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <DropdownMenuItem className={cn("hover:cursor-pointer")}>
-          {isLoading ? (
-            <ReloadIcon className="w-4 h-4 mr-2 animate-spin" />
-          ) : null}
+          {isLoading && <ReloadIcon className="w-4 h-4 mr-2 animate-spin" />}
           Hapus
         </DropdownMenuItem>
       </AlertDialogTrigger>
