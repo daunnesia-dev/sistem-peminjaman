@@ -1,4 +1,5 @@
 import Categories from "@/components/dashboard/categories";
+import AddButton from "@/components/dashboard/categories/add-button";
 import { currentUser } from "@clerk/nextjs";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -26,6 +27,9 @@ const page: FC = async () => {
           <p className="text-gray-500">
             Daftar kategori buku yang terdaftar di sistem.
           </p>
+        </div>
+        <div className="flex items-center space-x-2">
+          <AddButton />
         </div>
       </div>
       <Suspense>
