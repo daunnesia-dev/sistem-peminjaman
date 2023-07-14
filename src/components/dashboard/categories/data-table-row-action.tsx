@@ -1,13 +1,13 @@
 "use client";
 
 import DeleteButton from "@/components/dashboard/categories/delete-button";
+import EditButton from "@/components/dashboard/categories/edit-button";
 import { createCategoriesProps } from "@/lib/validator/dashboard/categories/api";
 import { Button } from "@/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/ui/dropdown-menu";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
@@ -37,7 +37,7 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuGroup onClick={() => setOpen(true)}>
-          <DropdownMenuItem>Edit</DropdownMenuItem>
+          <EditButton id={category.id} />
           <DeleteButton
             id={category.id}
             name={category.name}
