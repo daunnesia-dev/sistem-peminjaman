@@ -5,6 +5,9 @@ export const createRoomsProps = z.object({
   name: z
     .string()
     .nonempty({ message: "Nama ruangan tidak boleh kosong" })
+    .startsWith("Ruangan", {
+      message: 'Nama ruangan harus diawali dengan "Ruangan"',
+    })
     .min(2, { message: "Nama ruangan minimal 2 karakter" })
     .max(50, { message: "Nama ruangan maksimal 50 karakter" }),
 });
@@ -14,6 +17,9 @@ export const roomFormSchema = z.object({
   name: z
     .string()
     .nonempty({ message: "Nama ruangan tidak boleh kosong" })
+    .startsWith("Ruangan", {
+      message: 'Nama ruangan harus diawali dengan "Ruangan"',
+    })
     .min(2, { message: "Nama ruangan minimal 2 karakter" })
     .max(50, { message: "Nama ruangan maksimal 50 karakter" }),
 });

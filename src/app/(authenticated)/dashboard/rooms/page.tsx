@@ -1,7 +1,6 @@
 import Rooms from "@/components/dashboard/rooms";
-import { Button } from "@/ui/button";
+import AddButton from "@/components/dashboard/rooms/add-button";
 import { currentUser } from "@clerk/nextjs";
-import { PlusIcon } from "@radix-ui/react-icons";
 import { notFound } from "next/navigation";
 import { FC, Suspense } from "react";
 
@@ -23,10 +22,7 @@ const page: FC = async () => {
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Button>
-            <PlusIcon className="w-4 h-4 mr-2" />
-            Tambah Ruangan
-          </Button>
+          <AddButton />
         </div>
       </div>
       <Suspense>
