@@ -8,6 +8,7 @@ export const createStatusesProps = z.object({
     .min(2, { message: "Keterangan minimal 2 karakter" })
     .max(50, { message: "Keterangan maksimal 50 karakter" }),
 });
+export const ApiStatusesUpdateRequestValidator = createStatusesProps;
 
 export const statusesFormSchema = z.object({
   keterangan: z
