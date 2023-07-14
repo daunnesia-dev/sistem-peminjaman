@@ -4,6 +4,7 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
 import { detailCategory } from "@/helpers/dashboard/categories/detail-categories";
+import { updateCategories } from "@/helpers/dashboard/categories/update-categories";
 import { cn } from "@/lib/utils";
 import { categoryFormSchema } from "@/lib/validator/dashboard/categories/api";
 import { Button } from "@/ui/button";
@@ -39,7 +40,17 @@ export default function EditButton({ id }: { id: number }) {
   });
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading, error } = detailCategory(id, isOpen);
+  const {
+    isSuccess: isUpdateSuccess,
+    mutate: updateMutate,
+    isLoading: isUpdateLoading,
+    isError: isUpdateError,
+  } = updateCategories();
   const { toast } = useToast();
+
+  const onUpdateHandler = (values: z.infer<typeof categoryFormSchema>) => {
+    updateMutate({ id, ...values });
+  };
 
   useEffect(() => {
     if (data) {
@@ -57,6 +68,24 @@ export default function EditButton({ id }: { id: number }) {
     }
   }, [data, error, form]);
 
+  useEffect(() => {
+    if (isUpdateSuccess) {
+      toast({
+        title: "Success",
+        description: "Kategori buku berhasil diperbarui",
+      });
+      setIsOpen(false);
+    }
+
+    if (isUpdateError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat memperbarui kategori buku",
+      });
+    }
+  }, [isUpdateSuccess, isUpdateError]);
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -69,7 +98,10 @@ export default function EditButton({ id }: { id: number }) {
           <DialogTitle>Edit Kategori Buku</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={() => {}} className="space-y-8">
+          <form
+            onSubmit={form.handleSubmit(onUpdateHandler)}
+            className="space-y-8"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -88,8 +120,8 @@ export default function EditButton({ id }: { id: number }) {
               )}
             />
             <DialogFooter>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading && (
+              <Button type="submit" disabled={isLoading || isUpdateLoading}>
+                {(isLoading || isUpdateLoading) && (
                   <ReloadIcon className="w-4 h-4 mr-2 animate-spin" />
                 )}
                 Perbarui

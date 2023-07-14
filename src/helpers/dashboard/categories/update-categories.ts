@@ -9,7 +9,7 @@ export const updateCategories = () => {
   const mutation = useMutation(
     async (newData: z.infer<typeof ApiCategoriesUpdateRequestValidator>) => {
       const { data } = await axios.put(
-        `/api/dashboard/membership/update/${newData.id}`,
+        `/api/dashboard/categories/update/${newData.id}`,
         {
           name: newData.name,
         },
@@ -24,7 +24,7 @@ export const updateCategories = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ["categories", "detail-category"],
+          queryKey: ["categories"],
         });
       },
     }
