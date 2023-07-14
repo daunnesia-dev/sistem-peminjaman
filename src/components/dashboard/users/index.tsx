@@ -15,7 +15,7 @@ const Users = () => {
     <>
       {isLoading && (
         <div className="flex items-center justify-center w-full h-96">
-          <ReloadIcon className="w-10 h-10 animate-spin" />
+          <ReloadIcon className="w-8 h-8 animate-spin" />
         </div>
       )}
       {error && (
