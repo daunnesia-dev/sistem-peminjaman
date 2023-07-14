@@ -1,34 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🚀 Getting Started with Sistem Peminjaman Development
 
-## Getting Started
+## 📖 Table of Contents
 
-First, run the development server:
+- [🚀 Getting Started with Sistem Peminjaman Development](#🚀-getting-started-with-sistem-peminjaman-development)
+  - [📖 Table of Contents](#📖-table-of-contents)
+  - [📝 Introduction](#📝-introduction)
+  - [📦 Installation](#📦-installation)
+  - [🧩 How to Start Development](#🧩-how-to-start-development)
+  - [📚 Account Information](#📚-account-information)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## 📝 Introduction
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Sistem peminjaman adalah sebuah sistem yang digunakan untuk mengelola peminjaman di kampus. Aplikasi ini dibuat menggunakan NextJS dan PlanetScale DB.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📦 Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Clone this repository
+2. Install all dependencies using pnpm install
+3. Pull the latest changes from environment variables
+   ```bash
+   npx dotenv-vault@latest pull
+   ```
 
-## Learn More
+## 🧩 How to Start Development
 
-To learn more about Next.js, take a look at the following resources:
+1. Run the development server.
+   ```bash
+   pnpm run dev
+   ```
+2. You should have a ngrok server to run this application, you can download it [here](https://ngrok.com/download). After that, run the ngrok server.
+   ```bash
+   ./ngrok http 3000
+   ```
+3. Copy the ngrok url and paste it to note, you will need it later.
+4. Login to Clerk dahboard using admin account. Then go to webhooks and add api endpoint to the webhook.
+   ```bash
+   https://<your-ngrok-url>/api/webhooks/user
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📚 Account Information
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Google
+   - Email: `projekramdan@gmail.com`
+   - Password: `projekramdan@2023`
+2. PlanetScale
+   - Email: `projekramdan@gmail.com`
+   - Password: `projekramdan@2023`
+3. Clerk
+   - Email: `projekramdan@gmail.com`
+   - Password: `projekramdan@2023`
