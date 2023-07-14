@@ -1,5 +1,6 @@
 "use client";
 
+import DeleteButton from "@/components/dashboard/categories/delete-button";
 import { createCategoriesProps } from "@/lib/validator/dashboard/categories/api";
 import { Button } from "@/ui/button";
 import {
@@ -37,7 +38,11 @@ export function DataTableRowActions<TData>({
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuGroup onClick={() => setOpen(true)}>
           <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Hapus</DropdownMenuItem>
+          <DeleteButton
+            id={category.id}
+            name={category.name}
+            setOpen={setOpen}
+          />
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
