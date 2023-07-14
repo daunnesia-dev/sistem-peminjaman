@@ -1,6 +1,7 @@
 "use client";
 
 import DeleteButton from "@/components/dashboard/statuses/delete-button";
+import EditButton from "@/components/dashboard/statuses/edit-button";
 import { createStatusesProps } from "@/lib/validator/dashboard/statuses/api";
 import { Button } from "@/ui/button";
 import {
@@ -36,7 +37,12 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuGroup onClick={() => setOpen(true)}>
-          <DeleteButton id={statuses.id} keterangan={statuses.keterangan} setOpen={setOpen} />
+          <EditButton id={statuses.id} />
+          <DeleteButton
+            id={statuses.id}
+            keterangan={statuses.keterangan}
+            setOpen={setOpen}
+          />
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
