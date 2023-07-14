@@ -38,7 +38,7 @@ const DeleteButton = ({ id, name, setOpen }: DeleteProps) => {
     if (isSuccess) {
       toast({
         title: "Kategori Dihapus",
-        description: `Kategori ${name} telah berhasil dihapus`,
+        description: `Kategori \"${name}\" telah berhasil dihapus`,
       });
       setOpen(false);
     }
