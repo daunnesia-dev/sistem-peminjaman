@@ -27,13 +27,13 @@ const page: FC = async () => {
           {role === "admin" && (
             <>
               <Button asChild>
-                <Link href="/dashboard/books/create">
+                <Link href="/dashboard/books">
                   <PlusIcon className="w-4 h-4 mr-2" />
                   Tambah Buku
                 </Link>
               </Button>
               <Button asChild>
-                <Link href="/dashboard/rooms/create">
+                <Link href="/dashboard/rooms">
                   <PlusIcon className="w-4 h-4 mr-2" />
                   Tambah Ruangan
                 </Link>
