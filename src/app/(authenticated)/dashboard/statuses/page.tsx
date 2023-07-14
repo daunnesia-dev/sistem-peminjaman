@@ -1,11 +1,16 @@
 import Statuses from "@/components/dashboard/statuses";
-import { DialogStatusCreate } from "@/components/dashboard/statuses/dialog-status-create";
+import AddButton from "@/components/dashboard/statuses/add-button";
 import { currentUser } from "@clerk/nextjs";
+import { notFound } from "next/navigation";
 import { FC, Suspense } from "react";
 
 const page: FC = async () => {
     const user = await currentUser();
     const role = user?.publicMetadata.role;
+
+    if (!role) {
+        return notFound();
+    }
 
     return (
         <>
@@ -17,7 +22,7 @@ const page: FC = async () => {
                     </p>
                 </div>
                 <div className="flex items-center space-x-2">
-                    {role === "admin" && <DialogStatusCreate />}
+                    {role === "admin" && <AddButton />}
                 </div>
             </div>
             <Suspense>
