@@ -4,6 +4,7 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
 import { detailStatuses } from "@/helpers/dashboard/statuses/detail-statuses";
+import { updateStatuses } from "@/helpers/dashboard/statuses/update-statuses";
 import { cn } from "@/lib/utils";
 import { statusesFormSchema } from "@/lib/validator/dashboard/statuses/api";
 import { Button } from "@/ui/button";
@@ -39,7 +40,17 @@ export default function EditButton({ id }: { id: number }) {
   });
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading, error } = detailStatuses(id, isOpen);
+  const {
+    isSuccess: isUpdateSuccess,
+    mutate: updateMutate,
+    isLoading: isUpdateLoading,
+    isError: isUpdateError,
+  } = updateStatuses();
   const { toast } = useToast();
+
+  const onUpdateHandler = (values: z.infer<typeof statusesFormSchema>) => {
+    updateMutate({ id, ...values });
+  };
 
   useEffect(() => {
     if (data) {
@@ -57,6 +68,24 @@ export default function EditButton({ id }: { id: number }) {
     }
   }, [data, error, form]);
 
+  useEffect(() => {
+    if (isUpdateSuccess) {
+      toast({
+        title: "Success",
+        description: "Status berhasil diperbarui",
+      });
+      setIsOpen(false);
+    }
+
+    if (isUpdateError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat memperbarui status",
+      });
+    }
+  }, [isUpdateSuccess, isUpdateError]);
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -69,7 +98,10 @@ export default function EditButton({ id }: { id: number }) {
           <DialogTitle>Edit Status</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={() => {}} className="space-y-8">
+          <form
+            onSubmit={form.handleSubmit(onUpdateHandler)}
+            className="space-y-8"
+          >
             <FormField
               control={form.control}
               name="keterangan"
@@ -88,8 +120,8 @@ export default function EditButton({ id }: { id: number }) {
               )}
             />
             <DialogFooter>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading && (
+              <Button type="submit" disabled={isLoading || isUpdateLoading}>
+                {(isLoading || isUpdateLoading) && (
                   <ReloadIcon className="w-4 h-4 mr-2 animate-spin" />
                 )}
                 Perbarui
