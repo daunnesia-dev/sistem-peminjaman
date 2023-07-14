@@ -25,13 +25,13 @@ const page: FC = async () => {
               <Button asChild>
                 <Link href="/dashboard/books/create">
                   <PlusIcon className="w-4 h-4 mr-2" />
-                  Tambah Data Buku
+                  Tambah Buku
                 </Link>
               </Button>
               <Button asChild>
                 <Link href="/dashboard/rooms/create">
                   <PlusIcon className="w-4 h-4 mr-2" />
-                  Tambah Data Ruangan
+                  Tambah Ruangan
                 </Link>
               </Button>
             </>
