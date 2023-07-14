@@ -3,7 +3,7 @@ import {
   ApiAdminResponseValidator,
   ApiMemberResponseValidator,
 } from "@/lib/validator/dashboard/metrics/api";
-import { currentUser } from "@clerk/nextjs";
+import { clerkClient, currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -18,6 +18,9 @@ export const GET = async (req: NextRequest) => {
 
   if (role === "admin") {
     try {
+      const user_count = await clerkClient.users.getCount();
+      const category_count = await db.category.count();
+      const statuses_count = await db.statuses.count();
       const books_count = await db.book.count();
       const rooms_count = await db.room.count();
       const books_loans_count = await db.loanBook.count();
@@ -25,6 +28,9 @@ export const GET = async (req: NextRequest) => {
       const response = ApiAdminResponseValidator.parse({
         error: null,
         data: {
+          user_count,
+          category_count,
+          statuses_count,
           books_count,
           rooms_count,
           books_loans_count,

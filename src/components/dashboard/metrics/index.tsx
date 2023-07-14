@@ -6,11 +6,14 @@ import { cn } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "@/ui/alert";
 import {
   BackpackIcon,
+  Component1Icon,
   CrossCircledIcon,
   FilePlusIcon,
   FileTextIcon,
   HomeIcon,
-  ReloadIcon,
+  LightningBoltIcon,
+  PersonIcon,
+  ReloadIcon
 } from "@radix-ui/react-icons";
 
 const Metrics = (role: any) => {
@@ -41,6 +44,25 @@ const Metrics = (role: any) => {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {role.role === "admin" ? (
             <>
+              <MetricsCard
+                title="Total Pengguna"
+                value={data.user_count}
+                Icon={<PersonIcon className="w-4 h-4 text-muted-foreground" />}
+              />
+              <MetricsCard
+                title="Total Kategori"
+                value={data.category_count}
+                Icon={
+                  <Component1Icon className="w-4 h-4 text-muted-foreground" />
+                }
+              />
+              <MetricsCard
+                title="Total Status"
+                value={data.statuses_count}
+                Icon={
+                  <LightningBoltIcon className="w-4 h-4 text-muted-foreground" />
+                }
+              />
               <MetricsCard
                 title="Total Buku"
                 value={data.books_count}
