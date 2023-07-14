@@ -58,7 +58,7 @@ const Delete = ({ id, keterangan, setOpen }: DeleteProps) => {
       <AlertDialogTrigger asChild>
         <DropdownMenuItem className={cn("hover:cursor-pointer")}>
           {isLoading ? (
-            <ReloadIcon className="w-4 h-4 mr-2 animate-spin" />
+            <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
           ) : null}
           Hapus
         </DropdownMenuItem>

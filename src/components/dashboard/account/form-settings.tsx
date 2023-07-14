@@ -226,7 +226,7 @@ const FormSettings: FC<FormSettingsProps> = ({ user }) => {
 
         <div className="flex justify-end">
           <Button type="submit" disabled={isLoading}>
-            {isLoading && <ReloadIcon className="w-4 h-4 mr-2 animate-spin" />}
+            {isLoading && <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />}
             Simpan Perubahan
           </Button>
         </div>

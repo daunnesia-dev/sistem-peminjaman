@@ -98,7 +98,7 @@ export default function AddButton() {
             <DialogFooter>
               <Button type="submit" disabled={isLoading}>
                 {isLoading && (
-                  <ReloadIcon className="w-4 h-4 mr-2 animate-spin" />
+                  <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
                 )}
                 Simpan
               </Button>

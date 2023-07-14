@@ -122,7 +122,7 @@ export default function EditButton({ id }: { id: number }) {
             <DialogFooter>
               <Button type="submit" disabled={isLoading || isUpdateLoading}>
                 {(isLoading || isUpdateLoading) && (
-                  <ReloadIcon className="w-4 h-4 mr-2 animate-spin" />
+                  <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
                 )}
                 Perbarui
               </Button>
