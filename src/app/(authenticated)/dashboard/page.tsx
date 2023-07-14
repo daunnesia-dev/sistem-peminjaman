@@ -1,4 +1,6 @@
 import Metrics from "@/components/dashboard/metrics";
+import { cn } from "@/lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "@/ui/alert";
 import { Button } from "@/ui/button";
 import { currentUser } from "@clerk/nextjs";
 import { PlusIcon } from "@radix-ui/react-icons";
@@ -8,6 +10,8 @@ import { FC, Suspense } from "react";
 const page: FC = async () => {
   const user = await currentUser();
   const role = user?.publicMetadata.role;
+  const phoneNumber = user?.publicMetadata.phoneNumbers;
+  const address = user?.publicMetadata.address;
 
   return (
     <>
@@ -49,6 +53,26 @@ const page: FC = async () => {
           )}
         </div>
       </div>
+      {!phoneNumber && !address && role !== "admin" && (
+        <Alert
+          className={cn(
+            "bg-yellow-500 dark:bg-yellow-900 text-zinc-50 dark:text-zinc-50 border-yellow-500 dark:border-yellow-900"
+          )}
+        >
+          <AlertTitle>
+            Ayo Selesaikan Misi! <span className="sr-only">Informasi</span>
+          </AlertTitle>
+          <AlertDescription>
+            Silahkan lengkapi informasi akun anda terlebih dahulu{" "}
+            <Link
+              className={cn("underline")}
+              href="/dashboard/account/settings"
+            >
+              di sini
+            </Link>
+          </AlertDescription>
+        </Alert>
+      )}
       <Suspense>
         <Metrics role={role} />
       </Suspense>
