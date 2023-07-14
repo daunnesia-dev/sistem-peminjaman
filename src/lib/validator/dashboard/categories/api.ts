@@ -8,6 +8,7 @@ export const createCategoriesProps = z.object({
     .min(2, { message: "Nama kategori minimal 2 karakter" })
     .max(50, { message: "Nama kategori maksimal 50 karakter" }),
 });
+export const ApiCategoriesUpdateRequestValidator = createCategoriesProps;
 
 export const categoryFormSchema = z.object({
   name: z
