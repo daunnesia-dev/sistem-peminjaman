@@ -8,7 +8,7 @@ const page: FC = async () => {
   const user = await currentUser();
   const role = user?.publicMetadata.role;
 
-  if (!role) {
+  if (!role || role !== "admin") {
     return notFound();
   }
 
