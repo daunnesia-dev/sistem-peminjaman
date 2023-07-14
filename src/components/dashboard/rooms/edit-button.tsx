@@ -4,6 +4,7 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
 import { detailRooms } from "@/helpers/dashboard/rooms/detail-rooms";
+import { updateRooms } from "@/helpers/dashboard/rooms/update-rooms";
 import { cn } from "@/lib/utils";
 import { roomFormSchema } from "@/lib/validator/dashboard/rooms/api";
 import { Button } from "@/ui/button";
@@ -39,7 +40,17 @@ export default function EditButton({ id }: { id: number }) {
   });
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading, error } = detailRooms(id, isOpen);
+  const {
+    isSuccess: isUpdateSuccess,
+    mutate: updateMutate,
+    isLoading: isUpdateLoading,
+    isError: isUpdateError,
+  } = updateRooms();
   const { toast } = useToast();
+
+  const onUpdateHandler = (values: z.infer<typeof roomFormSchema>) => {
+    updateMutate({ id, ...values });
+  };
 
   useEffect(() => {
     if (data) {
@@ -57,6 +68,24 @@ export default function EditButton({ id }: { id: number }) {
     }
   }, [data, error, form]);
 
+  useEffect(() => {
+    if (isUpdateSuccess) {
+      toast({
+        title: "Success",
+        description: "Ruangan berhasil diperbarui",
+      });
+      setIsOpen(false);
+    }
+
+    if (isUpdateError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat memperbarui ruangan",
+      });
+    }
+  }, [isUpdateSuccess, isUpdateError]);
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -66,10 +95,13 @@ export default function EditButton({ id }: { id: number }) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] dark:text-slate-50">
         <DialogHeader>
-          <DialogTitle>Edit Status</DialogTitle>
+          <DialogTitle>Edit Ruangan</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={() => {}} className="space-y-8">
+          <form
+            onSubmit={form.handleSubmit(onUpdateHandler)}
+            className="space-y-8"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -78,7 +110,7 @@ export default function EditButton({ id }: { id: number }) {
                   <FormLabel>Nama Ruangan</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Diterima, Ditolak, Dalam Proses, dll"
+                      placeholder="Ruangan Lab Komputer"
                       disabled={isLoading}
                       {...field}
                     />
@@ -88,8 +120,8 @@ export default function EditButton({ id }: { id: number }) {
               )}
             />
             <DialogFooter>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading && (
+              <Button type="submit" disabled={isLoading || isUpdateLoading}>
+                {(isLoading || isUpdateLoading) && (
                   <ReloadIcon className="w-4 h-4 mr-2 animate-spin" />
                 )}
                 Perbarui
