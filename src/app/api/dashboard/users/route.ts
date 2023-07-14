@@ -17,7 +17,9 @@ export const GET = async (req: NextRequest) => {
         error: null,
         data: listUser.map((user) => ({
           id: user.id,
-          fullName: user.firstName + (user.lastName ? " " + user.lastName : ""),
+          fullName:
+            user.firstName +
+            (user.lastName || user.lastName !== "" ? " " + user.lastName : ""),
           email: user.emailAddresses[0].emailAddress,
           role: user.publicMetadata.role ? user.publicMetadata.role : "member",
           lastSignInAt: user.lastSignInAt

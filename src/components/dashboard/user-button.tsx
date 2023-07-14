@@ -38,14 +38,15 @@ const UserButton: FC<UserButtonProps> = ({ user }) => {
           <Avatar className={cn("w-8 h-8")}>
             <AvatarImage src={user?.imageUrl} />
             <AvatarFallback>
-              {user?.firstName && user?.lastName
+              {user?.firstName && (user?.lastName || user?.lastName !== "")
                 ? user?.firstName[0] + user?.lastName[0]
                 : user?.firstName?.slice(0, 2)}
             </AvatarFallback>
           </Avatar>
           <p className="text-sm font-semibold leading-7">
-            {user?.lastName && user?.firstName + " " + user?.lastName}
-            {!user?.lastName && user?.firstName}
+            {(user?.lastName || user?.lastName !== "") &&
+              user?.firstName + " " + user?.lastName}
+            {(!user?.lastName || user?.lastName === "") && user?.firstName}
           </p>
           {open ? (
             <ChevronUpIcon className="w-4 h-4" />

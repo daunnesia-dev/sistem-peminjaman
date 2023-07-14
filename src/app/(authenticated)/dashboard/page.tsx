@@ -16,7 +16,7 @@ const page: FC = async () => {
           <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
           <p className="text-gray-500">
             Selamat datang kembali, {user?.firstName}
-            {user?.lastName && ` ${user?.lastName}`}!
+            {(user?.lastName || user?.lastName !== "") && ` ${user?.lastName}`}!
           </p>
         </div>
         <div className="flex items-center space-x-2">
