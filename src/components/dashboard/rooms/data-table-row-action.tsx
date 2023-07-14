@@ -1,6 +1,7 @@
 "use client";
 
 import DeleteButton from "@/components/dashboard/rooms/delete-button";
+import EditButton from "@/components/dashboard/rooms/edit-button";
 import { createRoomsProps } from "@/lib/validator/dashboard/rooms/api";
 import { Button } from "@/ui/button";
 import {
@@ -9,7 +10,6 @@ import {
   DropdownMenuGroup,
   DropdownMenuTrigger,
 } from "@/ui/dropdown-menu";
-import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
 import { useState } from "react";
@@ -37,7 +37,7 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuGroup onClick={() => setOpen(true)}>
-          <DropdownMenuItem>Edit</DropdownMenuItem>
+          <EditButton id={room.id} />
           <DeleteButton id={room.id} name={room.name} setOpen={setOpen} />
         </DropdownMenuGroup>
       </DropdownMenuContent>
