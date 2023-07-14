@@ -46,7 +46,7 @@ model LoanBook {
   userId    String   @unique
   book      Book     @relation(fields: [bookId], references: [id])
   bookId    Int
-  status    Status   @relation(fields: [statusId], references: [id])
+  status    Statuses @relation(fields: [statusId], references: [id])
   statusId  Int      @default(0)
   quantity  Int?
   start     DateTime @default(now())
@@ -64,7 +64,7 @@ model Category {
   updatedAt DateTime @updatedAt
 }
 
-model Status {
+model Statuses {
   id         Int        @id @default(autoincrement())
   keterangan String     @unique
   createdAt  DateTime   @default(now())
@@ -83,17 +83,17 @@ model Room {
 }
 
 model LoanRoom {
-  id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [userId], references: [externalId])
-  userId     String   @unique
-  room       Room     @relation(fields: [roomId], references: [id])
+  id         Int       @id @default(autoincrement())
+  user       User      @relation(fields: [userId], references: [externalId])
+  userId     String    @unique
+  room       Room      @relation(fields: [roomId], references: [id])
   roomId     Int
-  Status     Status?  @relation(fields: [statusId], references: [id])
+  Status     Statuses? @relation(fields: [statusId], references: [id])
   statusId   Int?
   start      DateTime
   end        DateTime
   keterangan String
-  isDone     Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  isDone     Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
