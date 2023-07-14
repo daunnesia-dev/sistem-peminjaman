@@ -1,7 +1,6 @@
 "use client";
 
 import { storeStatus } from "@/helpers/dashboard/statuses/store-statuses";
-import { bookFormSchema } from "@/lib/validator/dashboard/books/api";
 import { statusesFormSchema } from "@/lib/validator/dashboard/statuses/api";
 import { Button } from "@/ui/button";
 import {
@@ -39,7 +38,7 @@ export default function AddButton() {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
 
-  function onSubmit(values: z.infer<typeof bookFormSchema>) {
+  function onSubmit(values: z.infer<typeof statusesFormSchema>) {
     mutate(values);
 
     form.reset();
@@ -49,7 +48,7 @@ export default function AddButton() {
     if (isSuccess) {
       toast({
         title: "Success",
-        description: "Buku berhasil ditambahkan",
+        description: "Status berhasil ditambahkan",
       });
       setIsOpen(false);
     }
@@ -58,7 +57,7 @@ export default function AddButton() {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Terjadi kesalahan saat menambahkan buku",
+        description: "Terjadi kesalahan saat menambahkan status",
       });
       form.reset();
       setIsOpen(false);
@@ -70,24 +69,24 @@ export default function AddButton() {
       <DialogTrigger asChild>
         <Button>
           <PlusIcon className="w-4 h-4 mr-2" />
-          Tambah Buku
+          Tambah Status
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] dark:text-slate-50">
         <DialogHeader>
-          <DialogTitle>Tambah Buku</DialogTitle>
+          <DialogTitle>Tambah Status</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="judul"
+              name="keterangan"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Judul</FormLabel>
+                  <FormLabel>Keterangan</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Masukkan judul buku"
+                      placeholder="Diterima, Ditolak, Dalam Proses, dll"
                       disabled={isLoading}
                       {...field}
                     />
