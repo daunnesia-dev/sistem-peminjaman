@@ -15,7 +15,11 @@ export const SITE = {
       name: "Ikram Maulana",
       url: "https://ikram-maulana.tech",
     },
+    {
+      name: "Deri Kurniawan",
+      url: "https://deri-kurniawan.my.id",
+    },
   ],
-  creator: "Ikram Maulana",
+  creator: ["Ikram Maulana", "Deri Kurniawan"],
   themeColor: "#F9F5EB",
 };
