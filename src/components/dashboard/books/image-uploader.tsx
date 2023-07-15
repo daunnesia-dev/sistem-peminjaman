@@ -19,7 +19,7 @@ export default function ImageUploader({
           setCoverImage(res[0].fileUrl);
           toast({
             title: "Gambar diupload",
-            description: "Gambar cover buku berhasil diupload.",
+            description: "Gambar sampul buku berhasil diupload.",
           });
         }}
         onUploadError={(error: Error) => {

@@ -34,6 +34,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import ImageUploader from "./image-uploader";
 import { bookFormSchema, yearNow } from "@/lib/validator/dashboard/books/api";
+import { storeBooks } from "@/helpers/dashboard/books/store-books";
+import { useRouter } from "next/navigation";
 
 interface HandleChangeProps {
   e: React.ChangeEvent<HTMLTextAreaElement>;
@@ -69,7 +71,14 @@ const CreateBook: FC = () => {
   });
   const [sinopsis, setSinopsis] = useState("");
   const [debounced] = useDebouncedValue(sinopsis, 200);
+  const {
+    isSuccess: isSuccessStore,
+    mutate: mutateStore,
+    isLoading: isLoadingStore,
+    isError: isErrorStore,
+  } = storeBooks();
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleChange = ({ e, name, limit, setState }: HandleChangeProps) => {
     const inputValue = e.target.value;
@@ -86,7 +95,7 @@ const CreateBook: FC = () => {
     if (coverImage !== "") {
       form.setValue("coverImage", coverImage);
     }
-  }, [coverImage]);
+  }, [coverImage, form]);
 
   useEffect(() => {
     if (data) {
@@ -103,8 +112,27 @@ const CreateBook: FC = () => {
   }, [data, error]);
 
   function onSubmit(values: z.infer<typeof bookFormSchema>) {
-    console.log(values);
+    mutateStore(values);
   }
+
+  useEffect(() => {
+    if (isSuccessStore) {
+      toast({
+        title: "Success",
+        description: "Buku berhasil ditambahkan",
+      });
+      router.push("/dashboard/books");
+    }
+
+    if (isErrorStore) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat menambahkan buku",
+      });
+      form.reset();
+    }
+  }, [isSuccessStore, isErrorStore, form, router]);
 
   return (
     <Form {...form}>
@@ -327,8 +355,10 @@ const CreateBook: FC = () => {
           <Button variant="outline" asChild>
             <Link href="/dashboard/books">Kembali</Link>
           </Button>
-          <Button type="submit" disabled={isLoading}>
-            {isLoading && <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />}
+          <Button type="submit" disabled={isLoading || isLoadingStore}>
+            {(isLoading || isLoadingStore) && (
+              <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
+            )}
             Simpan
           </Button>
         </div>
