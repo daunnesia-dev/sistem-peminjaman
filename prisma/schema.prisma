@@ -44,7 +44,7 @@ model Book {
 model LoanBook {
   id        Int      @id @default(autoincrement())
   user      User     @relation(fields: [userId], references: [externalId])
-  userId    String   @unique
+  userId    String
   book      Book     @relation(fields: [bookId], references: [id])
   bookId    Int
   status    Statuses @relation(fields: [statusId], references: [id])
@@ -86,7 +86,7 @@ model Room {
 model LoanRoom {
   id         Int       @id @default(autoincrement())
   user       User      @relation(fields: [userId], references: [externalId])
-  userId     String    @unique
+  userId     String
   room       Room      @relation(fields: [roomId], references: [id])
   roomId     Int
   Status     Statuses? @relation(fields: [statusId], references: [id])
