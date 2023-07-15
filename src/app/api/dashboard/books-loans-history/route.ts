@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { ApiLoansBookResponseValidator } from "@/lib/validator/dashboard/loans-book-history/api";
+import { ApiBooksLoansHistoryResponseValidator } from "@/lib/validator/dashboard/books-loans-history/api";
 import { currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -42,7 +42,7 @@ export const GET = async (req: NextRequest) => {
         },
       });
 
-      const response = ApiLoansBookResponseValidator.parse({
+      const response = ApiBooksLoansHistoryResponseValidator.parse({
         error: null,
         data: booksLoansHistory.map((loanBook) => ({
           id: loanBook.id,
@@ -114,7 +114,7 @@ export const GET = async (req: NextRequest) => {
         },
       });
 
-      const response = ApiLoansBookResponseValidator.parse({
+      const response = ApiBooksLoansHistoryResponseValidator.parse({
         error: null,
         data: booksLoansHistory.map((loanBook) => ({
           id: loanBook.id,
