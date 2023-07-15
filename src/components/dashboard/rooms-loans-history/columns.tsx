@@ -1,15 +1,14 @@
 "use client";
 
 import { DataTableColumnHeader } from "@/components/dashboard/rooms-loans-history/data-table-column-header";
-import { DataTableRowActions } from "@/components/dashboard/rooms-loans-history/data-table-row-action";
-// import { RoomsProps } from "@/lib/validator/dashboard/rooms/api";
+import { RoomsLoansHistoryProps } from "@/lib/validator/dashboard/rooms-loans-history/api";
 import { Checkbox } from "@/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 
-export const columns: any = [
+export const columns: ColumnDef<RoomsLoansHistoryProps>[] = [
   {
     id: "select",
-    header: ({ table }: any) => (
+    header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
         onCheckedChange={(value: any) =>
@@ -19,7 +18,7 @@ export const columns: any = [
         className="translate-y-[2px]"
       />
     ),
-    cell: ({ row }: any) => (
+    cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value: any) => row.toggleSelected(!!value)}
@@ -31,58 +30,28 @@ export const columns: any = [
     enableHiding: false,
   },
   {
-    accessorKey: "user.firstName",
-    header: ({ column }: any) => (
-      <DataTableColumnHeader column={column} title="Nama Peminjam" />
-    ),
-    enableHiding: false,
-  },
-  {
-    accessorKey: "room.name",
-    header: ({ column }: any) => (
+    accessorKey: "namaRuangan",
+    header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Nama Ruangan" />
     ),
     enableHiding: false,
   },
   {
-    accessorKey: "start",
-    header: ({ column }: any) => (
-      <DataTableColumnHeader column={column} title="Waktu Mulai" />
+    accessorKey: "tanggalPinjam",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Tanggal Pinjam" />
     ),
-    enableHiding: false,
   },
   {
-    accessorKey: "end",
-    header: ({ column }: any) => (
-      <DataTableColumnHeader column={column} title="Waktu Selesai" />
+    accessorKey: "tanggalKembali",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Tanggal Kembali" />
     ),
-    enableHiding: false,
   },
   {
-    accessorKey: "isDone",
-    header: ({ column }: any) => (
-      <DataTableColumnHeader column={column} title="Selesai" />
-    ),
-    enableHiding: false,
-  },
-  {
-    accessorKey: "keterangan",
-    header: ({ column }: any) => (
-      <DataTableColumnHeader column={column} title="Keterangan" />
-    ),
-    enableHiding: false,
-  },
-  {
-    accessorKey: "createdAt",
-    header: ({ column }: any) => (
-      <DataTableColumnHeader column={column} title="Dibuat Pada" />
-    ),
-    enableHiding: false,
-  },
-  {
-    accessorKey: "updatedAt",
-    header: ({ column }: any) => (
-      <DataTableColumnHeader column={column} title="Diubah Pada" />
+    accessorKey: "namaPeminjam",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Nama Peminjam" />
     ),
     enableHiding: false,
   },

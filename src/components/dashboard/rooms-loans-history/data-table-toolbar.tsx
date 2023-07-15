@@ -1,5 +1,6 @@
 "use client";
 
+import { DataTableViewOptions } from "@/components/dashboard/rooms-loans-history/data-table-view-options";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Cross2Icon } from "@radix-ui/react-icons";
@@ -19,7 +20,9 @@ export function DataTableToolbar<TData>({
       <div className="flex items-center flex-1 space-x-2">
         <Input
           placeholder="Cari Nama Ruangan"
-          value={(table.getColumn("room.name")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("room.name")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event: { target: { value: any } }) =>
             table.getColumn("room.name")?.setFilterValue(event.target.value)
           }
@@ -36,6 +39,7 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
+      <DataTableViewOptions table={table} />
     </div>
   );
 }

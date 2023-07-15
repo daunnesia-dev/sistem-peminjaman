@@ -1,4 +1,5 @@
 "use client";
+
 import { columns } from "@/components/dashboard/rooms-loans-history/columns";
 import { DataTable } from "@/components/dashboard/rooms-loans-history/data-table";
 import { getRoomsLoansHistory } from "@/helpers/dashboard/rooms-loans-history/get-rooms-loans-history";

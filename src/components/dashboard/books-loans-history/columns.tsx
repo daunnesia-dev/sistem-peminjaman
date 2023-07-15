@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTableColumnHeader } from "@/components/dashboard/books-loans-history/data-table-column-heder";
+import { DataTableColumnHeader } from "@/components/dashboard/books-loans-history/data-table-column-header";
 import { BooksLoansHistoryProps } from "@/lib/validator/dashboard/books-loans-history/api";
 import { Checkbox } from "@/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
