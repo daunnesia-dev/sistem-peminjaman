@@ -115,7 +115,7 @@ export const GET = async (req: NextRequest) => {
         error: null,
         data: roomsLoansHistory.map((loanRoom) => ({
           id: loanRoom.id,
-          judul: loanRoom.room.name,
+          namaRuangan: loanRoom.room.name,
           tanggalPinjam: new Date(loanRoom.start).toLocaleDateString("id-ID", {
             weekday: "long",
             year: "numeric",
