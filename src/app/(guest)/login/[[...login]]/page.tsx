@@ -37,6 +37,7 @@ export default function Page() {
                   "text-zinc-900 dark:text-zinc-50 md:dark:text-zinc-900",
               },
             }}
+            afterSignInUrl={"/dashboard"}
           />
         </Suspense>
       </div>
