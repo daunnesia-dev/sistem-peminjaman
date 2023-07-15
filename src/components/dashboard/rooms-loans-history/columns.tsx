@@ -6,7 +6,6 @@ import { DataTableRowActions } from "@/components/dashboard/rooms-loans-history/
 import { Checkbox } from "@/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 
-// export const columns: ColumnDef<RoomsProps>[] = [
 export const columns: any = [
   {
     id: "select",
@@ -87,8 +86,4 @@ export const columns: any = [
     ),
     enableHiding: false,
   },
-  // {
-  //   id: "actions",
-  //   cell: ({ row }: any) => <DataTableRowActions row={row} />,
-  // },
 ];
