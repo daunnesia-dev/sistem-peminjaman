@@ -13,8 +13,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { charCounter } from "@/helpers/char-counter";
+import { detailBooks } from "@/helpers/dashboard/books/detail-books";
+import { updateBooks } from "@/helpers/dashboard/books/update-books";
 import { getCategories } from "@/helpers/dashboard/categories/get-categories";
 import { cn } from "@/lib/utils";
+import { bookFormSchema, yearNow } from "@/lib/validator/dashboard/books/api";
 import { Button } from "@/ui/button";
 import {
   Form,
@@ -29,14 +32,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDebouncedValue } from "@mantine/hooks";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { FC, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import ImageUploader from "./image-uploader";
-import { bookFormSchema, yearNow } from "@/lib/validator/dashboard/books/api";
-import { storeBooks } from "@/helpers/dashboard/books/store-books";
-import { useRouter } from "next/navigation";
-import { detailBooks } from "@/helpers/dashboard/books/detail-books";
 
 interface HandleChangeProps {
   e: React.ChangeEvent<HTMLTextAreaElement>;
@@ -78,6 +78,12 @@ const EditBook = ({ id }: { id: number }) => {
   const [sinopsis, setSinopsis] = useState("");
   const [debounced] = useDebouncedValue(sinopsis, 200);
   const { data, isLoading, error } = detailBooks(id);
+  const {
+    isSuccess: isUpdateSuccess,
+    mutate: updateMutate,
+    isLoading: isUpdateLoading,
+    isError: isUpdateError,
+  } = updateBooks();
   const { toast } = useToast();
   const router = useRouter();
 
@@ -137,8 +143,26 @@ const EditBook = ({ id }: { id: number }) => {
   }, [data, error, setCoverImage, setSinopsis, form]);
 
   function onSubmit(values: z.infer<typeof bookFormSchema>) {
-    console.log(values);
+    updateMutate({ id, ...values });
   }
+
+  useEffect(() => {
+    if (isUpdateSuccess) {
+      toast({
+        title: "Success",
+        description: "Buku berhasil diperbarui",
+      });
+      router.push("/dashboard/books");
+    }
+
+    if (isUpdateError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat memperbarui buku",
+      });
+    }
+  }, [isUpdateSuccess, isUpdateError]);
 
   return (
     <Form {...form}>
@@ -361,11 +385,14 @@ const EditBook = ({ id }: { id: number }) => {
           <Button variant="outline" asChild>
             <Link href="/dashboard/books">Kembali</Link>
           </Button>
-          <Button type="submit" disabled={isLoading || isLoadingCategories}>
-            {(isLoading || isLoadingCategories) && (
+          <Button
+            type="submit"
+            disabled={isLoading || isLoadingCategories || isUpdateLoading}
+          >
+            {(isLoading || isLoadingCategories || isUpdateLoading) && (
               <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
             )}
-            Simpan
+            Perbarui
           </Button>
         </div>
       </form>
