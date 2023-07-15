@@ -1,13 +1,13 @@
-"use client";
-
+"use client";;
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@/components/ui/table";
 import { getBookById } from "@/helpers/dashboard/books-data/get-book-by-id";
-import { getBooksData } from "@/helpers/dashboard/books-data/get-books-data";
 import { cn } from "@/lib/utils";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
-import React, { FC } from "react";
+import React from "react";
+import { DatePickerWithRange } from "./DatePickerWithRange";
+import { DateRange } from "react-day-picker";
 
 type TBookDataDetail = {
     id: string;
@@ -16,6 +16,14 @@ type TBookDataDetail = {
 const BookDataDetail = ({ id }: TBookDataDetail): JSX.Element => {
     const { data, isLoading, error } = getBookById(id);
     const [isShowMore, setIsShowMore] = React.useState<boolean>(false);
+    const [date, setDate] = React.useState<DateRange | undefined>({
+        from: undefined,
+        to: undefined,
+    })
+
+    const handleBookLoan = () => {
+        console.log('book loan', date)
+    }
 
     return (
         <>
@@ -49,9 +57,9 @@ const BookDataDetail = ({ id }: TBookDataDetail): JSX.Element => {
                                     loader={({ src }) => src}
                                     alt="cover image"
                                 />
-                                <div className="flex flex-col gap-2 p-2">
-                                    <Button className={cn("w-full")} variant="outline">Hari Pinjam</Button>
-                                    <Button className={cn("w-full")} variant="default">Pinjam Buku</Button>
+                                <div className="flex flex-col gap-2 py-2">
+                                    <DatePickerWithRange date={date} setDate={setDate} />
+                                    <Button onClick={handleBookLoan} className={cn("w-full")} variant="default">Pinjam Buku</Button>
                                 </div>
                             </div>
                         </div>
