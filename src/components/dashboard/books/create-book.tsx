@@ -33,6 +33,7 @@ import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import ImageUploader from "./image-uploader";
+import { bookFormSchema, yearNow } from "@/lib/validator/dashboard/books/api";
 
 interface HandleChangeProps {
   e: React.ChangeEvent<HTMLTextAreaElement>;
@@ -48,52 +49,6 @@ interface HandleChangeProps {
   limit: number;
   setState: any;
 }
-
-const yearNow: number = new Date().getFullYear();
-const bookFormSchema = z.object({
-  coverImage: z
-    .string()
-    .nonempty({ message: "Gambar sampul buku tidak boleh kosong" }),
-  judul: z
-    .string()
-    .nonempty({ message: "Judul buku tidak boleh kosong" })
-    .min(3, { message: "Judul buku minimal 3 karakter" })
-    .max(100, { message: "Judul buku maksimal 100 karakter" }),
-  sinopsis: z
-    .string()
-    .nonempty({ message: "Sinopsis buku tidak boleh kosong" })
-    .min(3, { message: "Sinopsis buku minimal 3 karakter" })
-    .max(10000, { message: "Sinopsis buku maksimal 10000 karakter" }),
-  tahun: z
-    .string()
-    .nonempty({ message: "Tahun buku tidak boleh kosong" })
-    .min(4, { message: "Tahun buku minimal 4 karakter" })
-    .max(4, { message: "Tahun buku maksimal 4 karakter" })
-    .refine(
-      (val) => {
-        return parseInt(val) <= yearNow;
-      },
-      { message: "Tahun buku tidak boleh lebih dari tahun sekarang" }
-    ),
-  penerbit: z
-    .string()
-    .nonempty({ message: "Penerbit buku tidak boleh kosong" })
-    .min(3, { message: "Penerbit buku minimal 3 karakter" })
-    .max(100, { message: "Penerbit buku maksimal 100 karakter" }),
-  penulis: z
-    .string()
-    .nonempty({ message: "Penulis buku tidak boleh kosong" })
-    .min(3, { message: "Penulis buku minimal 3 karakter" })
-    .max(100, { message: "Penulis buku maksimal 100 karakter" }),
-  stok: z
-    .string()
-    .nonempty({ message: "Stok buku tidak boleh kosong" })
-    .min(1, { message: "Stok buku minimal 1" })
-    .regex(/^[1-9]\d*$/, { message: "Stok buku tidak boleh 0" }),
-  category: z
-    .string()
-    .nonempty({ message: "Kategori buku tidak boleh kosong" }),
-});
 
 const CreateBook: FC = () => {
   const { data, isLoading, error } = getCategories();
