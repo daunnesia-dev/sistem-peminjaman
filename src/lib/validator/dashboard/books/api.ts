@@ -21,10 +21,9 @@ export const createBooksProps = z.object({
     .string()
     .nonempty({ message: "Tahun buku tidak boleh kosong" })
     .min(4, { message: "Tahun buku minimal 4 karakter" })
-    .max(4, { message: "Tahun buku maksimal 4 karakter" })
     .refine(
       (val) => {
-        return parseInt(val) <= yearNow;
+        return parseInt(val) < yearNow;
       },
       { message: "Tahun buku tidak boleh lebih dari tahun sekarang" }
     ),
@@ -68,10 +67,9 @@ export const bookFormSchema = z.object({
     .string()
     .nonempty({ message: "Tahun buku tidak boleh kosong" })
     .min(4, { message: "Tahun buku minimal 4 karakter" })
-    .max(4, { message: "Tahun buku maksimal 4 karakter" })
     .refine(
       (val) => {
-        return parseInt(val) <= yearNow;
+        return parseInt(val) < yearNow;
       },
       { message: "Tahun buku tidak boleh lebih dari tahun sekarang" }
     ),
@@ -106,4 +104,40 @@ export const ApiBooksDeleteResponseValidator = z.object({
   data: z.string(),
 });
 
-export type BooksProps = z.infer<typeof createBooksProps>;
+export const showBooksProps = z.object({
+  id: z.number(),
+  coverImage: z
+    .string()
+    .nonempty({ message: "Gambar sampul buku tidak boleh kosong" }),
+  judul: z
+    .string()
+    .nonempty({ message: "Judul buku tidak boleh kosong" })
+    .min(3, { message: "Judul buku minimal 3 karakter" })
+    .max(100, { message: "Judul buku maksimal 100 karakter" }),
+  sinopsis: z
+    .string()
+    .nonempty({ message: "Sinopsis buku tidak boleh kosong" })
+    .min(3, { message: "Sinopsis buku minimal 3 karakter" })
+    .max(10000, { message: "Sinopsis buku maksimal 10000 karakter" }),
+  tahun: z
+    .number()
+    .min(4, { message: "Tahun buku minimal 4 karakter" })
+    .refine(
+      (val) => {
+        return val < yearNow;
+      },
+      { message: "Tahun buku tidak boleh lebih dari tahun sekarang" }
+    ),
+  penerbit: z
+    .string()
+    .nonempty({ message: "Penerbit buku tidak boleh kosong" })
+    .min(3, { message: "Penerbit buku minimal 3 karakter" })
+    .max(100, { message: "Penerbit buku maksimal 100 karakter" }),
+  penulis: z
+    .string()
+    .nonempty({ message: "Penulis buku tidak boleh kosong" })
+    .min(3, { message: "Penulis buku minimal 3 karakter" })
+    .max(100, { message: "Penulis buku maksimal 100 karakter" }),
+  stok: z.number().min(1, { message: "Stok buku minimal 1" }),
+});
+export type BooksProps = z.infer<typeof showBooksProps>;

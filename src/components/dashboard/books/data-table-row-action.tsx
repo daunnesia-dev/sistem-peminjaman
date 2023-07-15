@@ -1,7 +1,7 @@
 "use client";
 
 import DeleteButton from "@/components/dashboard/books/delete-button";
-import { createBooksProps } from "@/lib/validator/dashboard/books/api";
+import { showBooksProps } from "@/lib/validator/dashboard/books/api";
 import { Button } from "@/ui/button";
 import {
   DropdownMenu,
@@ -20,7 +20,7 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const books = createBooksProps.parse(row.original);
+  const books = showBooksProps.parse(row.original);
   const [open, setOpen] = useState(false);
 
   return (
@@ -36,11 +36,7 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuGroup onClick={() => setOpen(true)}>
-          <DeleteButton
-            id={books.id}
-            judul={books.judul}
-            setOpen={setOpen}
-          />
+          <DeleteButton id={books.id} judul={books.judul} setOpen={setOpen} />
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
