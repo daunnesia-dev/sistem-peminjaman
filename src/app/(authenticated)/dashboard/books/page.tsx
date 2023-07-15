@@ -2,9 +2,14 @@ import Books from "@/components/dashboard/books";
 import { Button } from "@/components/ui/button";
 import { currentUser } from "@clerk/nextjs";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FC, Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Dashboard Buku",
+};
 
 const page: FC = async () => {
   const user = await currentUser();

@@ -1,7 +1,12 @@
 import RoomsLoansHistory from "@/components/dashboard/rooms-loans-history";
 import { auth } from "@clerk/nextjs";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FC, Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Dashboard Riwayat Peminjaman Ruangan",
+};
 
 const page: FC = async () => {
   const { userId } = auth();

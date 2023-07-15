@@ -4,8 +4,13 @@ import { Alert, AlertDescription, AlertTitle } from "@/ui/alert";
 import { Button } from "@/ui/button";
 import { currentUser } from "@clerk/nextjs";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { Metadata } from "next";
 import Link from "next/link";
 import { FC, Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 const page: FC = async () => {
   const user = await currentUser();

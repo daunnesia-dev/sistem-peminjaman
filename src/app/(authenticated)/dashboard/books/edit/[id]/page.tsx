@@ -2,8 +2,13 @@ import EditBook from "@/components/dashboard/books/edit-book";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Dashboard Edit Buku",
+};
 
 const page = async ({ params }: { params: { id: number } }) => {
   const user = await currentUser();

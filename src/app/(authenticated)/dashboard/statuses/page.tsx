@@ -1,8 +1,13 @@
 import Statuses from "@/components/dashboard/statuses";
 import AddButton from "@/components/dashboard/statuses/add-button";
 import { currentUser } from "@clerk/nextjs";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FC, Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Dashboard Status",
+};
 
 const page: FC = async () => {
   const user = await currentUser();

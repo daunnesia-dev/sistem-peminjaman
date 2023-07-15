@@ -1,8 +1,13 @@
 import Rooms from "@/components/dashboard/rooms";
 import AddButton from "@/components/dashboard/rooms/add-button";
 import { currentUser } from "@clerk/nextjs";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FC, Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Dashboard Master Ruangan",
+};
 
 const page: FC = async () => {
   const user = await currentUser();

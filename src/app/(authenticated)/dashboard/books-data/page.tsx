@@ -1,5 +1,5 @@
 import BooksData from "@/components/dashboard/books-data";
-import { currentUser } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FC, Suspense } from "react";
@@ -9,10 +9,9 @@ export const metadata: Metadata = {
 };
 
 const page: FC = async () => {
-  const user = await currentUser();
-  const role = user?.publicMetadata.role;
+  const { userId } = auth();
 
-  if (!role || role !== "admin") {
+  if (!userId) {
     return notFound();
   }
 
@@ -20,12 +19,8 @@ const page: FC = async () => {
     <>
       <div className="flex flex-col mb-6 space-y-2 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col">
-          <h2 className="text-3xl font-bold tracking-tight">
-            Data Buku
-          </h2>
-          <p className="text-gray-500">
-            Daftar buku yang terdaftar di sistem.
-          </p>
+          <h2 className="text-3xl font-bold tracking-tight">Data Buku</h2>
+          <p className="text-gray-500">Daftar buku yang terdaftar di sistem.</p>
         </div>
       </div>
       <Suspense>

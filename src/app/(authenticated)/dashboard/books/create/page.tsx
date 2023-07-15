@@ -2,8 +2,13 @@ import CreateBook from "@/components/dashboard/books/create-book";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FC, Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Dashboard Tambah Buku",
+};
 
 const page: FC = async () => {
   const user = await currentUser();

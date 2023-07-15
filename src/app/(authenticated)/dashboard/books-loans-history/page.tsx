@@ -1,7 +1,12 @@
 import BooksLoansHistory from "@/components/dashboard/books-loans-history";
-import { auth, currentUser } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FC, Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Dashboard Riwayat Peminjaman Buku",
+};
 
 const page: FC = async () => {
   const { userId } = auth();
