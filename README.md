@@ -2,12 +2,12 @@
 
 ## 📖 Table of Contents
 
-- [🚀 Getting Started with Sistem Peminjaman Development](#🚀-getting-started-with-sistem-peminjaman-development)
-  - [📖 Table of Contents](#📖-table-of-contents)
-  - [📝 Introduction](#📝-introduction)
-  - [📦 Installation](#📦-installation)
-  - [🧩 How to Start Development](#🧩-how-to-start-development)
-  - [📚 Account Information](#📚-account-information)
+- [🚀 Getting Started with Sistem Peminjaman Development](#-getting-started-with-sistem-peminjaman-development)
+  - [📖 Table of Contents](#-table-of-contents)
+  - [📝 Introduction](#-introduction)
+  - [📦 Installation](#-installation)
+  - [🧩 How to Start Development](#-how-to-start-development)
+  - [📚 Account Information](#-account-information)
 
 ## 📝 Introduction
 
@@ -29,9 +29,17 @@ Sistem peminjaman adalah sebuah sistem yang digunakan untuk mengelola peminjaman
    pnpm run dev
    ```
 2. You should have a ngrok server to run this application, you can download it [here](https://ngrok.com/download). After that, run the ngrok server.
+
    ```bash
    ./ngrok http 3000
    ```
+
+If you are using ngrok with static domain, you can run this command instead.
+
+```bash
+ngrok http --domain <your-ngrok-domain> 3000
+```
+
 3. Copy the ngrok url and paste it to note, you will need it later.
 4. Login to Clerk dahboard using admin account. Then go to webhooks and add api endpoint to the webhook.
    ```bash
