@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { ApiRoomsResponseValidator } from "@/lib/validator/dashboard/rooms/api";
+import { ApiRoomsLoansHistoryResponseValidator } from "@/lib/validator/dashboard/rooms-loans-history/api";
 import { currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -11,60 +11,128 @@ export const GET = async (req: NextRequest) => {
   }
 
   const role = user?.publicMetadata.role;
+
   if (role === "admin") {
     try {
-      const rooms = await db.loanRoom.findMany({
-        orderBy: {
-          createdAt: "asc",
+      const roomsLoansHistory = await db.loanRoom.findMany({
+        select: {
+          id: true,
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+            },
+          },
+          room: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          start: true,
+          end: true,
         },
-        include: {
-          room: true,
-          user: true,
+        where: {
+          isDone: true,
+        },
+        orderBy: {
+          start: "asc",
         },
       });
-      const response = {
+
+      const response = ApiRoomsLoansHistoryResponseValidator.parse({
         error: null,
-        data: [
-          ...rooms.map((room) => {
-            return {
-              ...room,
-              isDone: room.isDone == true ? "Ya" : "Tidak",
-              start: new Date(room.start).toLocaleDateString("id-ID", {
-                year: "numeric",
-                month: "long",
-                weekday: "long",
-                day: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-              }),
-              end: new Date(room.end).toLocaleDateString("id-ID", {
-                year: "numeric",
-                month: "long",
-                weekday: "long",
-                day: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-              }),
-              createdAt: new Date(room.createdAt).toLocaleDateString("id-ID", {
-                year: "numeric",
-                month: "long",
-                weekday: "long",
-                day: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-              }),
-              updatedAt: new Date(room.updatedAt).toLocaleDateString("id-ID", {
-                year: "numeric",
-                month: "long",
-                weekday: "long",
-                day: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-              }),
-            };
+        data: roomsLoansHistory.map((loanRoom) => ({
+          id: loanRoom.id,
+          namaRuangan: loanRoom.room.name,
+          tanggalPinjam: new Date(loanRoom.start).toLocaleDateString("id-ID", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           }),
-        ],
-      };
+          tanggalKembali: new Date(loanRoom.end).toLocaleDateString("id-ID", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          namaPeminjam: `${loanRoom.user.firstName}${
+            loanRoom.user.lastName && ` ${loanRoom.user.lastName}`
+          }`,
+        })),
+      });
+
+      return NextResponse.json(response, { status: 200 });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return NextResponse.json(
+          {
+            error: error.issues,
+            data: null,
+          },
+          { status: 400 }
+        );
+      }
+
+      return NextResponse.json(
+        { error: "Internal server error", data: null },
+        { status: 500 }
+      );
+    }
+  } else if (!role || role !== "admin") {
+    try {
+      const roomsLoansHistory = await db.loanRoom.findMany({
+        select: {
+          id: true,
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+            },
+          },
+          room: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          start: true,
+          end: true,
+        },
+        where: {
+          isDone: true,
+          userId: user.id,
+        },
+        orderBy: {
+          start: "asc",
+        },
+      });
+
+      const response = ApiRoomsLoansHistoryResponseValidator.parse({
+        error: null,
+        data: roomsLoansHistory.map((loanRoom) => ({
+          id: loanRoom.id,
+          judul: loanRoom.room.name,
+          tanggalPinjam: new Date(loanRoom.start).toLocaleDateString("id-ID", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          tanggalKembali: new Date(loanRoom.end).toLocaleDateString("id-ID", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          namaPeminjam: `${loanRoom.user.firstName}${
+            loanRoom.user.lastName && ` ${loanRoom.user.lastName}`
+          }`,
+        })),
+      });
 
       return NextResponse.json(response, { status: 200 });
     } catch (error) {
