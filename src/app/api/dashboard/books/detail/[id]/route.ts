@@ -23,9 +23,12 @@ export const GET = async (
 
   if (role === "admin") {
     try {
-      const book = await db.book.findUnique({
+      const book = await db.book.findFirst({
         where: {
           id: id,
+        },
+        include: {
+          category: true,
         },
       });
 
