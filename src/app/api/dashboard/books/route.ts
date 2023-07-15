@@ -23,7 +23,7 @@ export const GET = async (req: NextRequest) => {
           sinopsis: true,
           tahun: true,
           penerbit: true,
-          lokasi: true,
+          penulis: true,
           stok: true,
           createdAt: true,
           updatedAt: true,
@@ -32,21 +32,7 @@ export const GET = async (req: NextRequest) => {
 
       const response = {
         error: null,
-        data: books.map((book) => ({
-          ...book,
-          createdAt: new Date(book.createdAt).toLocaleDateString("id-ID", {
-            year: "numeric",
-            month: "long",
-            weekday: "long",
-            day: "numeric",
-          }),
-          updatedAt: new Date(book.updatedAt).toLocaleDateString("id-ID", {
-            year: "numeric",
-            month: "long",
-            weekday: "long",
-            day: "numeric",
-          }),
-        })),
+        data: books,
       };
       return NextResponse.json(response, { status: 200 });
     } catch (error) {

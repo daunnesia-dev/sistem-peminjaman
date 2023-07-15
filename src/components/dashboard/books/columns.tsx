@@ -38,9 +38,9 @@ export const columns: ColumnDef<BooksProps>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "tahun",
+    accessorKey: "penulis",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tahun Terbit" />
+      <DataTableColumnHeader column={column} title="Penulis" />
     ),
     enableHiding: false,
   },
@@ -49,28 +49,18 @@ export const columns: ColumnDef<BooksProps>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Penerbit" />
     ),
-    enableHiding: false,
+  },
+  {
+    accessorKey: "tahun",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Tahun Terbit" />
+    ),
   },
   {
     accessorKey: "stok",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Stok" />
     ),
-    enableHiding: false,
-  },
-  {
-    accessorKey: "createdAt",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Dibuat Pada" />
-    ),
-    enableHiding: false,
-  },
-  {
-    accessorKey: "updatedAt",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Diperbarui Pada" />
-    ),
-    enableHiding: false,
   },
   {
     id: "actions",
