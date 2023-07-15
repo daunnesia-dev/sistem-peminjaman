@@ -10,7 +10,7 @@ export const GET = async (req: NextRequest) => {
   }
 
   const role = user?.publicMetadata.role;
-  if (role === "user" || role === "admin") {
+  if (role === "admin" || !role || role !== "admin") {
     try {
       const books = await db.book.findMany();
 
