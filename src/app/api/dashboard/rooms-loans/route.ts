@@ -40,7 +40,7 @@ export const GET = async (req: NextRequest) => {
           },
         },
         where: {
-          isDone: true,
+          isDone: false,
         },
         orderBy: {
           start: "asc",
@@ -116,7 +116,7 @@ export const GET = async (req: NextRequest) => {
           },
         },
         where: {
-          isDone: true,
+          isDone: false,
           userId: user.id,
         },
         orderBy: {
