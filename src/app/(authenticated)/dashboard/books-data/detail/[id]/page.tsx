@@ -1,4 +1,4 @@
-import BooksData from "@/components/dashboard/books-data";
+import BookDataDetail from "@/components/dashboard/books-data/detail";
 import { auth } from "@clerk/nextjs";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Dashboard Detail Data Buku",
 };
 
-const page = async ({ params }: { params: { id: number } }) => {
+const page = async ({ params }: { params: { id: string } }) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -22,10 +22,12 @@ const page = async ({ params }: { params: { id: number } }) => {
           <h2 className="text-3xl font-bold tracking-tight">
             Detail Data Buku
           </h2>
-          <p className="text-gray-500">Detail buku yang terdaftar di sistem.</p>
-          {JSON.stringify(params)}
+          <p className="text-gray-500">Tentang detail buku yang dipilih.</p>
         </div>
       </div>
+      <Suspense>
+        <BookDataDetail id={params.id} />
+      </Suspense>
     </>
   );
 };
