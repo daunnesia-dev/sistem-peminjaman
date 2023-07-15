@@ -94,6 +94,7 @@ model LoanRoom {
   start      DateTime
   end        DateTime
   keterangan String
+  isTersedia Boolean   @default(true)
   isDone     Boolean   @default(false)
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
