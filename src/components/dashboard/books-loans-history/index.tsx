@@ -2,7 +2,7 @@
 
 import { columns } from "@/components/dashboard/books-loans-history/columns";
 import { DataTable } from "@/components/dashboard/books-loans-history/data-table";
-import { getBooksLoansHistory } from "@/helpers/dashboard/books-loans-history/get-loans";
+import { getBooksLoansHistory } from "@/helpers/dashboard/books-loans-history/get-books-loans-history";
 import { cn } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "@/ui/alert";
 import { Card, CardContent } from "@/ui/card";
