@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { deleteBook } from "@/helpers/dashboard/books/delete-categories";
+import { deleteBook } from "@/helpers/dashboard/books/delete-books";
 import { cn } from "@/lib/utils";
 import {
   AlertDialog,
