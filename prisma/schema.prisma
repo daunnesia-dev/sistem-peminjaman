@@ -29,10 +29,10 @@ model Book {
   id         Int        @id @default(autoincrement())
   coverImage String
   judul      String
-  sinopsis   String
+  sinopsis   String     @db.LongText
   tahun      Int
   penerbit   String
-  lokasi     String
+  penulis    String
   stok       Int
   category   Category[]
   LoanBook   LoanBook[]
