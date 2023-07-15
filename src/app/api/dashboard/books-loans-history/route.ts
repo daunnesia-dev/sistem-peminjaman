@@ -14,7 +14,7 @@ export const GET = async (req: NextRequest) => {
 
   if (role === "admin") {
     try {
-      const loansBookHistory = await db.loanBook.findMany({
+      const booksLoansHistory = await db.loanBook.findMany({
         select: {
           id: true,
           user: {
@@ -44,7 +44,7 @@ export const GET = async (req: NextRequest) => {
 
       const response = ApiLoansBookResponseValidator.parse({
         error: null,
-        data: loansBookHistory.map((loanBook) => ({
+        data: booksLoansHistory.map((loanBook) => ({
           id: loanBook.id,
           judul: loanBook.book.judul,
           jumlah: loanBook.quantity,
@@ -85,7 +85,7 @@ export const GET = async (req: NextRequest) => {
     }
   } else if (!role || role !== "admin") {
     try {
-      const loansBookHistory = await db.loanBook.findMany({
+      const booksLoansHistory = await db.loanBook.findMany({
         select: {
           id: true,
           user: {
@@ -116,7 +116,7 @@ export const GET = async (req: NextRequest) => {
 
       const response = ApiLoansBookResponseValidator.parse({
         error: null,
-        data: loansBookHistory.map((loanBook) => ({
+        data: booksLoansHistory.map((loanBook) => ({
           id: loanBook.id,
           judul: loanBook.book.judul,
           jumlah: loanBook.quantity,
