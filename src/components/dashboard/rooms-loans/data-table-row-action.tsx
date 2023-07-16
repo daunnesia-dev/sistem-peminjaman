@@ -2,7 +2,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { createRoomsLoansProps } from "@/lib/validator/dashboard/rooms-loans/api";
+import { createResponseRoomsLoansProps } from "@/lib/validator/dashboard/rooms-loans/api";
 import { Button } from "@/ui/button";
 import {
   DropdownMenu,
@@ -25,7 +25,7 @@ export function DataTableRowActions<TData>({
 }: DataTableRowActionsProps<TData>) {
   const { user } = useUser();
   const role = user?.publicMetadata.role;
-  const roomsLoans = createRoomsLoansProps.parse(row.original);
+  const roomsLoans = createResponseRoomsLoansProps.parse(row.original);
   const [open, setOpen] = useState(false);
 
   return (

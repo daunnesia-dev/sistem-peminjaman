@@ -1,4 +1,5 @@
 import RoomsLoans from "@/components/dashboard/rooms-loans";
+import AddButton from "@/components/dashboard/rooms-loans/add-button";
 import { auth } from "@clerk/nextjs";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -25,6 +26,9 @@ const page: FC = async () => {
           <p className="text-gray-500">
             Fitur ini digunakan untuk mengelola peminjaman ruangan.
           </p>
+        </div>
+        <div className="flex items-center space-x-2">
+          <AddButton />
         </div>
       </div>
       <Suspense>

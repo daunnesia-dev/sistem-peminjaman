@@ -24,6 +24,9 @@ export const storeRoomsLoans = () => {
         queryClient.invalidateQueries({
           queryKey: ["roomsLoans"],
         });
+        queryClient.invalidateQueries({
+          queryKey: ["roomsTersedia"],
+        });
       },
     }
   );

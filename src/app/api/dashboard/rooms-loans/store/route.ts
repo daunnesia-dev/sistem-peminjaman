@@ -33,6 +33,10 @@ export const POST = async (req: NextRequest) => {
         keterangan,
       },
     });
+    await db.room.update({
+      where: { id: parseInt(roomId) },
+      data: { tersedia: false },
+    });
 
     return NextResponse.json(
       {

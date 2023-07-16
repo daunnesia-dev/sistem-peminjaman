@@ -17,12 +17,56 @@ export const ApiRoomsLoansAdminUpdateRequestValidator =
   updateRoomsLoansAdminProps;
 
 export const roomLoansFormSchema = z.object({
-  roomId: z.string(),
-  tanggalPinjam: z.string(),
-  tanggalKembali: z.string(),
-  keterangan: z.string(),
+  roomId: z.string().nonempty({
+    message: "Ruangan tidak boleh kosong.",
+  }),
+  tanggalPinjam: z.date({
+    required_error: "Tanggal pinjam harus diisi.",
+  }),
+  tanggalKembali: z.date({
+    required_error: "Tanggal kembali harus diisi.",
+  }),
+  keterangan: z
+    .string()
+    .nonempty({
+      message: "Keterangan tidak boleh kosong.",
+    })
+    .min(10, {
+      message: "Keterangan minimal 10 karakter.",
+    })
+    .max(300, {
+      message: "Keterangan maksimal 300 karakter.",
+    }),
 });
-export const ApiRoomsLoansRequestValidator = roomLoansFormSchema;
+const createRoomsLoansRequestValidator = z.object({
+  roomId: z.string().nonempty({
+    message: "Ruangan tidak boleh kosong.",
+  }),
+  tanggalPinjam: z
+    .string()
+    .nonempty({
+      message: "Tanggal pinjam harus diisi.",
+    })
+    .transform((val) => new Date(val)),
+  tanggalKembali: z
+    .string()
+    .nonempty({
+      message: "Tanggal pinjam harus diisi.",
+    })
+    .transform((val) => new Date(val)),
+  keterangan: z
+    .string()
+    .nonempty({
+      message: "Keterangan tidak boleh kosong.",
+    })
+    .min(10, {
+      message: "Keterangan minimal 10 karakter.",
+    })
+    .max(300, {
+      message: "Keterangan maksimal 300 karakter.",
+    }),
+});
+export const ApiRoomsLoansRequestValidator = createRoomsLoansRequestValidator;
 
 export const createResponseRoomsLoansProps = z.object({
   id: z.number(),
