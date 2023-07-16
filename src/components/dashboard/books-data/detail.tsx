@@ -16,13 +16,9 @@ type TBookDataDetail = {
 const BookDataDetail = ({ id }: TBookDataDetail): JSX.Element => {
     const { data, isLoading, error } = getBookById(id);
     const [isShowMore, setIsShowMore] = React.useState<boolean>(false);
-    const [date, setDate] = React.useState<DateRange | undefined>({
-        from: undefined,
-        to: undefined,
-    })
 
     const handleBookLoan = () => {
-        console.log('book loan', date)
+        console.log('book loan')
     }
 
     return (
@@ -58,7 +54,6 @@ const BookDataDetail = ({ id }: TBookDataDetail): JSX.Element => {
                                     alt="cover image"
                                 />
                                 <div className="flex flex-col gap-2 py-2">
-                                    <DatePickerWithRange date={date} setDate={setDate} />
                                     <Button onClick={handleBookLoan} className={cn("w-full")} variant="default">Pinjam Buku</Button>
                                 </div>
                             </div>
@@ -90,7 +85,7 @@ const BookDataDetail = ({ id }: TBookDataDetail): JSX.Element => {
                                     <TableRow>
                                         <TableHead>Jumlah Pinjaman</TableHead>
                                         <TableCell>:</TableCell>
-                                        <TableCell>{data.LoanBook.length} dari {data.stok + data.LoanBook.length} buku</TableCell>
+                                        <TableCell>{data.LoanBook ? `${data.LoanBook?.length} dari ${data.stok + data.LoanBook?.length} buku` : data.stok}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableHead>Tanggal Posting</TableHead>
