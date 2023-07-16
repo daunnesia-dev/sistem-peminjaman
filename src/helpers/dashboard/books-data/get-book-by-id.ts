@@ -4,7 +4,7 @@ import axios from "axios";
 export const getBookById = (id: string) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   return useQuery({
-    queryKey: ["booksData"],
+    queryKey: ["detailBooksData", id],
     queryFn: async () => {
       const { data } = await axios.get(`/api/dashboard/books-data/${id}`, {
         headers: {
