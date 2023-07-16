@@ -48,7 +48,7 @@ model LoanBook {
   book      Book     @relation(fields: [bookId], references: [id])
   bookId    Int
   status    Statuses @relation(fields: [statusId], references: [id])
-  statusId  Int      @default(0)
+  statusId  Int      @default(1)
   quantity  Int?
   start     DateTime @default(now())
   end       DateTime
@@ -90,7 +90,7 @@ model LoanRoom {
   room       Room      @relation(fields: [roomId], references: [id])
   roomId     Int
   Status     Statuses? @relation(fields: [statusId], references: [id])
-  statusId   Int?
+  statusId   Int       @default(1)
   start      DateTime
   end        DateTime
   keterangan String    @db.Text
