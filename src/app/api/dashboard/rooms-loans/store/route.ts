@@ -27,7 +27,7 @@ export const POST = async (req: NextRequest) => {
     const roomsLoans = await db.loanRoom.create({
       data: {
         userId,
-        roomId,
+        roomId: parseInt(roomId),
         start: tanggalPinjam,
         end: tanggalKembali,
         keterangan,
