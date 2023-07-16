@@ -1,5 +1,5 @@
-import { ApiRoomsLoansResponseValidator } from "@/lib/validator/dashboard/rooms-loans/api";
 import { db } from "@/lib/db";
+import { ApiRoomsResponseValidator } from "@/lib/validator/dashboard/rooms/api";
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -19,7 +19,7 @@ export const GET = async (req: NextRequest) => {
         createdAt: "asc",
       },
     });
-    const response = ApiRoomsLoansResponseValidator.parse({
+    const response = ApiRoomsResponseValidator.parse({
       error: null,
       data: rooms,
     });
