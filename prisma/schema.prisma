@@ -93,7 +93,7 @@ model LoanRoom {
   statusId   Int?
   start      DateTime
   end        DateTime
-  keterangan String
+  keterangan String    @db.Text
   isDone     Boolean   @default(false)
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
