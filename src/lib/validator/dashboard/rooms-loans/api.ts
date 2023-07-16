@@ -17,16 +17,24 @@ export const ApiRoomsLoansAdminUpdateRequestValidator =
   updateRoomsLoansAdminProps;
 
 export const roomLoansFormSchema = z.object({
-  roomId: z.number(),
+  roomId: z.string(),
   tanggalPinjam: z.string(),
   tanggalKembali: z.string(),
   keterangan: z.string(),
 });
 export const ApiRoomsLoansRequestValidator = roomLoansFormSchema;
 
+export const createResponseRoomsLoansProps = z.object({
+  id: z.number(),
+  namaRuangan: z.string(),
+  tanggalPinjam: z.string(),
+  tanggalKembali: z.string(),
+  namaPeminjam: z.string(),
+  status: z.string(),
+});
 export const ApiRoomsLoansResponseValidator = z.object({
   error: z.string().nullable(),
-  data: z.array(createRoomsLoansProps),
+  data: z.array(createResponseRoomsLoansProps),
 });
 
 export const ApiRoomsLoansDeleteResponseValidator = z.object({
@@ -34,4 +42,4 @@ export const ApiRoomsLoansDeleteResponseValidator = z.object({
   data: z.string(),
 });
 
-export type RoomsLoansProps = z.infer<typeof createRoomsLoansProps>;
+export type RoomsLoansProps = z.infer<typeof createResponseRoomsLoansProps>;
