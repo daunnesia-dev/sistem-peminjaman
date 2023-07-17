@@ -22,8 +22,12 @@ export const POST = async (req: NextRequest) => {
 
     const stock = bookStock?.stok ?? 0;
     const quantityInt = parseInt(quantity);
-    const bookNotInStock =
-      stock < quantityInt || stock === 0 || stock - quantityInt < 0;
+    const quantityOverStock = stock < quantityInt || stock - quantityInt < 0;
+    const bookNotInStock = stock === 0;
+
+    if (quantityOverStock) {
+      return NextResponse.json("Quantity is over stock", { status: 422 });
+    }
 
     if (bookNotInStock) {
       return NextResponse.json("Book is not available", { status: 422 });
