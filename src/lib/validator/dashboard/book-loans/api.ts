@@ -71,6 +71,10 @@ export const ApiBooksLoansResponseValidator = z.object({
   error: z.string().nullable(),
   data: z.array(createResponseBooksLoansProps),
 });
+export const ApiBooksLoansDetailResponseValidator = z.object({
+  error: z.string().nullable(),
+  data: createResponseBooksLoansProps,
+});
 
 export const ApiBooksLoansDeleteResponseValidator = z.object({
   error: z.string().nullable(),
