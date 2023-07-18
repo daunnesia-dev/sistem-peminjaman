@@ -2,6 +2,7 @@
 "use client";
 
 import DetailButton from "@/components/dashboard/books-loans/detail-button";
+import { batalkanBooksLoans } from "@/helpers/dashboard/books-loans/batalkan-books-loans";
 import { updateDiterimaBooksLoans } from "@/helpers/dashboard/books-loans/update-diterima-books-loans";
 import { updateDitolakBooksLoans } from "@/helpers/dashboard/books-loans/update-ditolak-books-loans";
 import { updatePendingBooksLoans } from "@/helpers/dashboard/books-loans/update-pending-books-loans";
@@ -51,6 +52,12 @@ export function DataTableRowActions<TData>({
     isLoading: isUpdateDitolakStatusLoading,
     isError: isUpdateDitolakStatusError,
   } = updateDitolakBooksLoans();
+  const {
+    isSuccess: isBatalkanBooksLoansSuccess,
+    mutate: batalkanBooksLoansById,
+    isLoading: isBatalkanBooksLoansLoading,
+    isError: isBatalkanBooksLoansError,
+  } = batalkanBooksLoans();
 
   const handleUpdatePendingStatus = () => {
     updatePendingStatus({
@@ -66,6 +73,12 @@ export function DataTableRowActions<TData>({
 
   const handleUpdateDitolakStatus = () => {
     updateDitolakStatus({
+      id: booksLoans.id,
+    });
+  };
+
+  const handleBatalkanBooksLoans = () => {
+    batalkanBooksLoansById({
       id: booksLoans.id,
     });
   };
@@ -107,6 +120,24 @@ export function DataTableRowActions<TData>({
       });
     }
   }, [isUpdateDiterimaStatusSuccess, isUpdateDiterimaStatusError]);
+
+  useEffect(() => {
+    if (isBatalkanBooksLoansSuccess) {
+      toast({
+        title: "Success",
+        description: "Pembatalan peminjaman buku berhasil.",
+      });
+      setOpen(false);
+    }
+
+    if (isBatalkanBooksLoansError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat membatalkan peminjaman buku.",
+      });
+    }
+  }, [isBatalkanBooksLoansSuccess, isBatalkanBooksLoansError]);
 
   useEffect(() => {
     if (isUpdateDitolakStatusSuccess) {
@@ -181,22 +212,32 @@ export function DataTableRowActions<TData>({
                 null}
             </>
           )}
-          {!role ||
-            (role !== "admin" && (
-              <>
-                {booksLoans.status === "Pending" && (
+          {(!role || role !== "admin") && (
+            <>
+              {booksLoans.status === "Pending" && (
+                <>
                   <DropdownMenuItem className={cn("hover:cursor-pointer")}>
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className={cn("hover:cursor-pointer")}
+                    onClick={() => handleBatalkanBooksLoans()}
+                  >
+                    {isBatalkanBooksLoansLoading && (
+                      <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
+                    )}
                     Batalkan
                   </DropdownMenuItem>
-                )}
-                {booksLoans.status === "Reviewing" && null}
-                {booksLoans.status === "Diterima" && (
-                  <DropdownMenuItem className={cn("hover:cursor-pointer")}>
-                    Kembalikan
-                  </DropdownMenuItem>
-                )}
-              </>
-            ))}
+                </>
+              )}
+              {booksLoans.status === "Reviewing" && null}
+              {booksLoans.status === "Diterima" && (
+                <DropdownMenuItem className={cn("hover:cursor-pointer")}>
+                  Kembalikan
+                </DropdownMenuItem>
+              )}
+            </>
+          )}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
