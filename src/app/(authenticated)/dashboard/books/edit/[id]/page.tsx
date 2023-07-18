@@ -1,5 +1,5 @@
 import EditBook from "@/components/dashboard/books/edit-book";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/ui/card";
 import { cn } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs";
 import { Metadata } from "next";

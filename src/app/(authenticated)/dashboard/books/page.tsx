@@ -1,5 +1,5 @@
 import Books from "@/components/dashboard/books";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/ui/button";
 import { currentUser } from "@clerk/nextjs";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { Metadata } from "next";

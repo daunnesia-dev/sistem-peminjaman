@@ -1,13 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { Calendar } from "@/components/ui/calendar";
-import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Calendar } from "@/ui/calendar";
+import { Input } from "@/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/ui/popover";
 import {
   Select,
   SelectContent,
@@ -16,7 +12,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/ui/select";
 import { getBooksTersedia } from "@/helpers/dashboard/books-loans/get-books-tersedia";
 import { storeBooksLoans } from "@/helpers/dashboard/books-loans/store-books-loans";
 import { cn } from "@/lib/utils";

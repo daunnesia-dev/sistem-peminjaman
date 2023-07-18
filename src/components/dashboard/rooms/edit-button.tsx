@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { useToast } from "@/components/ui/use-toast";
+import { DropdownMenuItem } from "@/ui/dropdown-menu";
+import { useToast } from "@/ui/use-toast";
 import { detailRooms } from "@/helpers/dashboard/rooms/detail-rooms";
 import { updateRooms } from "@/helpers/dashboard/rooms/update-rooms";
 import { cn } from "@/lib/utils";

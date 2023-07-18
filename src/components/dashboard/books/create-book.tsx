@@ -9,9 +9,9 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
+} from "@/ui/select";
+import { Textarea } from "@/ui/textarea";
+import { useToast } from "@/ui/use-toast";
 import { charCounter } from "@/helpers/char-counter";
 import { getCategories } from "@/helpers/dashboard/categories/get-categories";
 import { cn } from "@/lib/utils";

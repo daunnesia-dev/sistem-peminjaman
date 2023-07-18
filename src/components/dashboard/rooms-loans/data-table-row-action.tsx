@@ -16,7 +16,7 @@ import { useUser } from "@clerk/nextjs";
 import { DotsHorizontalIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/ui/use-toast";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -29,19 +29,21 @@ export function DataTableRowActions<TData>({
   const role = user?.publicMetadata.role;
   const roomsLoans = createResponseRoomsLoansProps.parse(row.original);
   const [open, setOpen] = useState(false);
-  const { data, isLoading, isError, isSuccess, mutate } = updatePendingStatusRoomLoan();
+  const { data, isLoading, isError, isSuccess, mutate } =
+    updatePendingStatusRoomLoan();
   const { toast } = useToast();
 
   const handleClickReviewing = (roomLoanId: number) => {
     mutate({ roomLoanId });
-  }
+  };
 
   useEffect(() => {
     if (isSuccess) {
       toast({
         variant: "default",
         title: "Sukses",
-        description: "Sekarang status peminjaman ruangan telah diubah menjadi direview.",
+        description:
+          "Sekarang status peminjaman ruangan telah diubah menjadi direview.",
       });
     }
   }, [isSuccess, toast]);
@@ -51,7 +53,8 @@ export function DataTableRowActions<TData>({
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Terjadi kesalahan saat mengubah status peminjaman ruangan.",
+        description:
+          "Terjadi kesalahan saat mengubah status peminjaman ruangan.",
       });
     }
   }, [isError, toast]);
@@ -75,8 +78,14 @@ export function DataTableRowActions<TData>({
           {role === "admin" && (
             <>
               {roomsLoans.status === "Pending" && (
-                <DropdownMenuItem className={cn("hover:cursor-pointer")} onClick={() => handleClickReviewing(roomsLoans.id)} disabled={isLoading}>
-                  {isLoading && <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />}
+                <DropdownMenuItem
+                  className={cn("hover:cursor-pointer")}
+                  onClick={() => handleClickReviewing(roomsLoans.id)}
+                  disabled={isLoading}
+                >
+                  {isLoading && (
+                    <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
+                  )}
                   Reviewing
                 </DropdownMenuItem>
               )}
