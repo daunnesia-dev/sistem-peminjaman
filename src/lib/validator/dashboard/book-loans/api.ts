@@ -17,6 +17,21 @@ export const updateBooksLoansAdminProps = z.object({
 export const ApiBooksLoansAdminUpdateRequestValidator =
   updateBooksLoansAdminProps;
 
+export const updateBooksLoansFormSchema = z.object({
+  id: z.number(),
+  quantity: z
+    .string()
+    .nonempty({
+      message: "Jumlah pinjam tidak boleh kosong.",
+    })
+    .min(1, {
+      message: "Jumlah pinjam tidak boleh kurang dari 1.",
+    }),
+  tanggalKembali: z.date({
+    required_error: "Tanggal kembali harus diisi.",
+  }),
+});
+
 export const bookLoansFormSchema = z.object({
   bookId: z.string().nonempty({
     message: "Buku tidak boleh kosong.",
