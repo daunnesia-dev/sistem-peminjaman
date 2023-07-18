@@ -131,7 +131,8 @@ export const GET = async (req: NextRequest) => {
         error: null,
         data: booksLoans.map((book) => ({
           id: book.id,
-          namaRuangan: book.book.judul,
+          namaBuku: book.book.judul,
+          jumlah: book.quantity,
           tanggalPinjam: new Date(book.start).toLocaleDateString("id-ID", {
             weekday: "long",
             year: "numeric",
