@@ -47,8 +47,8 @@ model LoanBook {
   userId    String
   book      Book     @relation(fields: [bookId], references: [id])
   bookId    Int
-  status    Statuses @relation(fields: [statusId], references: [id])
-  statusId  Int      @default(1)
+  status    Statuses? @relation(fields: [statusId], references: [id])
+  statusId  Int       @default(1)
   quantity  Int?
   start     DateTime @default(now())
   end       DateTime
