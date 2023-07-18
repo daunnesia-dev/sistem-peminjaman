@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
+import DetailButton from "@/components/dashboard/books-loans/detail-button";
 import { cn } from "@/lib/utils";
 import { createResponseBooksLoansProps } from "@/lib/validator/dashboard/book-loans/api";
 import { Button } from "@/ui/button";
@@ -41,9 +42,7 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuGroup onClick={() => setOpen(true)}>
-          <DropdownMenuItem className={cn("hover:cursor-pointer")}>
-            Detail
-          </DropdownMenuItem>
+          <DetailButton id={booksLoans.id} />
           {role === "admin" && (
             <>
               {booksLoans.status === "Pending" && (
