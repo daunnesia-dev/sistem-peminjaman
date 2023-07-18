@@ -50,6 +50,7 @@ export function DataTableRowActions<TData>({
         title: "Success",
         description: "Status peminjaman buku telah diubah menjadi direview.",
       });
+      setOpen(false);
     }
 
     if (isUpdatePendingStatusError) {
