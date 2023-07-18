@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { ApiBooksLoansResponseValidator } from "@/lib/validator/dashboard/book-loans/api";
+import { ApiBooksTersediaResponseValidator } from "@/lib/validator/dashboard/books/api";
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -13,13 +13,15 @@ export const GET = async (req: NextRequest) => {
   try {
     const books = await db.book.findMany({
       where: {
-        stok: { gt: 0 },
+        stok: {
+          gt: 0,
+        },
       },
       orderBy: {
         createdAt: "asc",
       },
     });
-    const response = ApiBooksLoansResponseValidator.parse({
+    const response = ApiBooksTersediaResponseValidator.parse({
       error: null,
       data: books,
     });
