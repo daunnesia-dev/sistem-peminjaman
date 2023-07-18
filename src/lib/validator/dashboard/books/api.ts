@@ -152,6 +152,6 @@ export const showBooksProps = z.object({
     .nonempty({ message: "Penulis buku tidak boleh kosong" })
     .min(3, { message: "Penulis buku minimal 3 karakter" })
     .max(100, { message: "Penulis buku maksimal 100 karakter" }),
-  stok: z.number().min(1, { message: "Stok buku minimal 1" }),
+  stok: z.number(),
 });
 export type BooksProps = z.infer<typeof showBooksProps>;
