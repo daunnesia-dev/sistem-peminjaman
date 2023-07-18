@@ -99,6 +99,20 @@ export const ApiBooksResponseValidator = z.object({
   data: z.array(createBooksProps),
 });
 
+export const ApiBooksTersediaResponseValidator = z.object({
+  error: z.string().nullable(),
+  data: z.array(
+    z.object({
+      id: z.number(),
+      judul: z
+        .string()
+        .nonempty({ message: "Judul buku tidak boleh kosong" })
+        .min(3, { message: "Judul buku minimal 3 karakter" })
+        .max(100, { message: "Judul buku maksimal 100 karakter" }),
+    })
+  ),
+});
+
 export const ApiBooksDeleteResponseValidator = z.object({
   error: z.string().nullable(),
   data: z.string(),
