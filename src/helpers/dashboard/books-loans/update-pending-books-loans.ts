@@ -1,0 +1,34 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+import { roomLoansFormSchema } from "@/lib/validator/dashboard/rooms-loans/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { z } from "zod";
+
+export const updatePendingBooksLoans = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    async (newData: z.infer<any>) => {
+      const { data } = await axios.put(
+        `/api/dashboard/books-loans/update/review-books-loans/${newData.id}`,
+        {
+          headers: {
+            "Cache-Control": "no-store",
+          },
+        }
+      );
+      return data.data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["booksLoans"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["detailBooksLoans"],
+        });
+      },
+    }
+  );
+
+  return mutation;
+};
