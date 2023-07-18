@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { roomLoansFormSchema } from "@/lib/validator/dashboard/rooms-loans/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { z } from "zod";

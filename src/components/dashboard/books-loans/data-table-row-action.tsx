@@ -2,6 +2,7 @@
 "use client";
 
 import DetailButton from "@/components/dashboard/books-loans/detail-button";
+import { updatePendingBooksLoans } from "@/helpers/dashboard/books-loans/update-pending-books-loans";
 import { cn } from "@/lib/utils";
 import { createResponseBooksLoansProps } from "@/lib/validator/dashboard/book-loans/api";
 import { Button } from "@/ui/button";
@@ -12,10 +13,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/ui/dropdown-menu";
+import { useToast } from "@/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { DotsHorizontalIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -28,6 +30,37 @@ export function DataTableRowActions<TData>({
   const role = user?.publicMetadata.role;
   const booksLoans = createResponseBooksLoansProps.parse(row.original);
   const [open, setOpen] = useState(false);
+  const { toast } = useToast();
+  const {
+    isSuccess: isUpdatePendingStatusSuccess,
+    mutate: updatePendingStatus,
+    isLoading: isUpdatePendingStatusLoading,
+    isError: isUpdatePendingStatusError,
+  } = updatePendingBooksLoans();
+
+  const handleUpdatePendingStatus = () => {
+    updatePendingStatus({
+      id: booksLoans.id,
+    });
+  };
+
+  useEffect(() => {
+    if (isUpdatePendingStatusSuccess) {
+      toast({
+        title: "Success",
+        description: "Status peminjaman buku telah diubah menjadi direview.",
+      });
+    }
+
+    if (isUpdatePendingStatusError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description:
+          "Terjadi kesalahan saat memperbarui status peminjaman buku.",
+      });
+    }
+  }, [isUpdatePendingStatusSuccess, isUpdatePendingStatusError]);
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -46,11 +79,17 @@ export function DataTableRowActions<TData>({
           {role === "admin" && (
             <>
               {booksLoans.status === "Pending" && (
-                <DropdownMenuItem className={cn("hover:cursor-pointer")}>
+                <DropdownMenuItem
+                  className={cn("hover:cursor-pointer")}
+                  onClick={() => handleUpdatePendingStatus()}
+                >
+                  {isUpdatePendingStatusLoading && (
+                    <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
+                  )}
                   Reviewing
                 </DropdownMenuItem>
               )}
-              {booksLoans.status === "Reviewing" && (
+              {booksLoans.status === "Direview" && (
                 <>
                   <DropdownMenuItem className={cn("hover:cursor-pointer")}>
                     Terima
