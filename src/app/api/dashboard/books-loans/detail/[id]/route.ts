@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { ApiBooksLoansDetailResponseValidator } from "@/lib/validator/dashboard/book-loans/api";
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -52,13 +53,39 @@ export const GET = async (
       },
     });
 
-    return NextResponse.json(
-      {
-        error: null,
-        data: booksLoans,
+    if (!booksLoans) {
+      return NextResponse.json(
+        { error: "Data tidak ditemukan", data: null },
+        { status: 404 }
+      );
+    }
+
+    const response = ApiBooksLoansDetailResponseValidator.parse({
+      error: null,
+      data: {
+        id: booksLoans.id,
+        namaBuku: booksLoans.book.judul,
+        jumlah: booksLoans.quantity,
+        tanggalPinjam: new Date(booksLoans.start).toLocaleDateString("id-ID", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+        tanggalKembali: new Date(booksLoans.end).toLocaleDateString("id-ID", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+        namaPeminjam: `${booksLoans.user.firstName}${
+          booksLoans.user.lastName && ` ${booksLoans.user.lastName}`
+        }`,
+        status: booksLoans.status?.keterangan,
       },
-      { status: 201 }
-    );
+    });
+
+    return NextResponse.json(response, { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
