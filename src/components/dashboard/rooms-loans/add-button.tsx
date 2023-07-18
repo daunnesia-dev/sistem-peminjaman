@@ -105,7 +105,7 @@ export default function AddButton() {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Terjadi kesalahan saat mengambil data kategori buku",
+        description: "Terjadi kesalahan saat mengambil data ruangan",
       });
     }
   }, [data, error]);
