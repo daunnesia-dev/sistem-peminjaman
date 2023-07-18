@@ -2,6 +2,7 @@
 "use client";
 
 import DetailButton from "@/components/dashboard/books-loans/detail-button";
+import { updateDiterimaBooksLoans } from "@/helpers/dashboard/books-loans/update-diterima-books-loans";
 import { updatePendingBooksLoans } from "@/helpers/dashboard/books-loans/update-pending-books-loans";
 import { cn } from "@/lib/utils";
 import { createResponseBooksLoansProps } from "@/lib/validator/dashboard/book-loans/api";
@@ -37,9 +38,21 @@ export function DataTableRowActions<TData>({
     isLoading: isUpdatePendingStatusLoading,
     isError: isUpdatePendingStatusError,
   } = updatePendingBooksLoans();
+  const {
+    isSuccess: isUpdateDiterimaStatusSuccess,
+    mutate: updateDiterimaStatus,
+    isLoading: isUpdateDiterimaStatusLoading,
+    isError: isUpdateDiterimaStatusError,
+  } = updateDiterimaBooksLoans();
 
   const handleUpdatePendingStatus = () => {
     updatePendingStatus({
+      id: booksLoans.id,
+    });
+  };
+
+  const handleUpdateDiterimaStatus = () => {
+    updateDiterimaStatus({
       id: booksLoans.id,
     });
   };
@@ -62,6 +75,25 @@ export function DataTableRowActions<TData>({
       });
     }
   }, [isUpdatePendingStatusSuccess, isUpdatePendingStatusError]);
+
+  useEffect(() => {
+    if (isUpdateDiterimaStatusSuccess) {
+      toast({
+        title: "Success",
+        description: "Status peminjaman buku telah diubah menjadi diterima.",
+      });
+      setOpen(false);
+    }
+
+    if (isUpdateDiterimaStatusError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description:
+          "Terjadi kesalahan saat memperbarui status peminjaman buku.",
+      });
+    }
+  }, [isUpdateDiterimaStatusSuccess, isUpdateDiterimaStatusError]);
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -92,7 +124,13 @@ export function DataTableRowActions<TData>({
               )}
               {booksLoans.status === "Direview" && (
                 <>
-                  <DropdownMenuItem className={cn("hover:cursor-pointer")}>
+                  <DropdownMenuItem
+                    className={cn("hover:cursor-pointer")}
+                    onClick={() => handleUpdateDiterimaStatus()}
+                  >
+                    {isUpdateDiterimaStatusLoading && (
+                      <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
+                    )}
                     Terima
                   </DropdownMenuItem>
                   <DropdownMenuItem className={cn("hover:cursor-pointer")}>
