@@ -21,9 +21,14 @@ export const bookLoansFormSchema = z.object({
   bookId: z.string().nonempty({
     message: "Buku tidak boleh kosong.",
   }),
-  quantity: z.string().nonempty({
-    message: "Jumlah pinjam tidak boleh kosong.",
-  }),
+  quantity: z
+    .string()
+    .nonempty({
+      message: "Jumlah pinjam tidak boleh kosong.",
+    })
+    .min(1, {
+      message: "Jumlah pinjam tidak boleh kurang dari 1.",
+    }),
   tanggalPinjam: z.date({
     required_error: "Tanggal pinjam harus diisi.",
   }),
