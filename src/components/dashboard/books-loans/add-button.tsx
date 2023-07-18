@@ -17,8 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { charCounter } from "@/helpers/char-counter";
 import { getBooksTersedia } from "@/helpers/dashboard/books-loans/get-books-tersedia";
 import { storeBooksLoans } from "@/helpers/dashboard/books-loans/store-books-loans";
 import { cn } from "@/lib/utils";
@@ -42,7 +40,6 @@ import {
 } from "@/ui/form";
 import { useToast } from "@/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDebouncedValue } from "@mantine/hooks";
 import { CalendarIcon, PlusIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
