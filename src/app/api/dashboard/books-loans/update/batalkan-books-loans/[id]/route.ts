@@ -21,8 +21,17 @@ export const DELETE = async (
 
   try {
     const batalkanBooksLoans = await db.loanBook.delete({
-      where: { id },
+      where: {
+        id,
+        status: {
+          keterangan: "Pending",
+        },
+      },
     });
+
+    if (!batalkanBooksLoans) {
+      return NextResponse.json("Unprocessable entity", { status: 422 });
+    }
 
     const bookId = batalkanBooksLoans.bookId;
     const bookQuantityBorrowed = batalkanBooksLoans.quantity ?? 0;
