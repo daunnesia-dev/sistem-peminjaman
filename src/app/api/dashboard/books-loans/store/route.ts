@@ -37,6 +37,7 @@ export const POST = async (req: NextRequest) => {
       data: {
         userId,
         bookId: parseInt(bookId),
+        quantity: quantityInt,
         start: tanggalPinjam,
         end: tanggalKembali,
       },
