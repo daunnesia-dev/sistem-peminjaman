@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
-import { updatePendingStatusRoomLoan } from "@/helpers/dashboard/rooms-loans/update-pending-status-room-loan";
+import { updatePendingStatusRoomsLoans } from "@/helpers/dashboard/rooms-loans/update-pending-rooms-loans";
 import { cn } from "@/lib/utils";
 import { createResponseRoomsLoansProps } from "@/lib/validator/dashboard/rooms-loans/api";
 import { Button } from "@/ui/button";
@@ -12,11 +12,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/ui/dropdown-menu";
+import { useToast } from "@/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
 import { DotsHorizontalIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { useToast } from "@/ui/use-toast";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -29,35 +29,37 @@ export function DataTableRowActions<TData>({
   const role = user?.publicMetadata.role;
   const roomsLoans = createResponseRoomsLoansProps.parse(row.original);
   const [open, setOpen] = useState(false);
-  const { data, isLoading, isError, isSuccess, mutate } =
-    updatePendingStatusRoomLoan();
   const { toast } = useToast();
+  const {
+    isSuccess: isUpdatePendingStatusSuccess,
+    mutate: updatePendingStatus,
+    isLoading: isUpdatePendingStatusLoading,
+    isError: isUpdatePendingStatusError,
+  } = updatePendingStatusRoomsLoans();
 
-  const handleClickReviewing = (roomLoanId: number) => {
-    mutate({ roomLoanId });
+  const handleUpdatePendingStatus = () => {
+    updatePendingStatus({
+      id: roomsLoans.id,
+    });
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isUpdatePendingStatusSuccess) {
       toast({
-        variant: "default",
-        title: "Sukses",
-        description:
-          "Sekarang status peminjaman ruangan telah diubah menjadi direview.",
+        title: "Success",
+        description: "Status peminjaman ruangan telah diubah menjadi direview.",
       });
     }
-  }, [isSuccess, toast]);
 
-  useEffect(() => {
-    if (isError) {
+    if (isUpdatePendingStatusError) {
       toast({
         variant: "destructive",
         title: "Error",
         description:
-          "Terjadi kesalahan saat mengubah status peminjaman ruangan.",
+          "Terjadi kesalahan saat memperbarui status peminjaman ruangan.",
       });
     }
-  }, [isError, toast]);
+  }, [isUpdatePendingStatusSuccess, isUpdatePendingStatusError]);
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -80,16 +82,15 @@ export function DataTableRowActions<TData>({
               {roomsLoans.status === "Pending" && (
                 <DropdownMenuItem
                   className={cn("hover:cursor-pointer")}
-                  onClick={() => handleClickReviewing(roomsLoans.id)}
-                  disabled={isLoading}
+                  onClick={() => handleUpdatePendingStatus()}
                 >
-                  {isLoading && (
+                  {isUpdatePendingStatusLoading && (
                     <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
                   )}
                   Reviewing
                 </DropdownMenuItem>
               )}
-              {roomsLoans.status === "Reviewing" && (
+              {roomsLoans.status === "Direview" && (
                 <>
                   <DropdownMenuItem className={cn("hover:cursor-pointer")}>
                     Terima

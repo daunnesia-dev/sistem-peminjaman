@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { z } from "zod";
 
-export const updatePendingStatusRoomLoan = () => {
+export const updatePendingStatusRoomsLoans = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation(
     async (newData: z.infer<any>) => {
