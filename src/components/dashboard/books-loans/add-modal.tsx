@@ -43,7 +43,13 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-export default function AddButton() {
+export default function AddModal({
+  idBuku,
+  children,
+}: {
+  idBuku?: string;
+  children: React.ReactNode;
+}) {
   const form = useForm<z.infer<typeof bookLoansFormSchema>>({
     resolver: zodResolver(bookLoansFormSchema),
     defaultValues: {
@@ -63,6 +69,12 @@ export default function AddButton() {
     isLoading: isLoadingStore,
     isError: isErrorStore,
   } = storeBooksLoans();
+
+  useEffect(() => {
+    if (idBuku) {
+      form.setValue("bookId", idBuku);
+    }
+  }, [idBuku, form]);
 
   useEffect(() => {
     if (tanggalKembali) {
@@ -112,12 +124,7 @@ export default function AddButton() {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button>
-          <PlusIcon className="w-4 h-4 mr-2" />
-          Pinjam Buku
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px] dark:text-slate-50">
         <DialogHeader>
           <DialogTitle>Pinjam Buku</DialogTitle>
@@ -139,7 +146,10 @@ export default function AddButton() {
                     <div className={cn("space-y-4")}>
                       {isLoading && <p>Loading...</p>}
                       {!isLoading && (
-                        <Select onValueChange={field.onChange}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Buku" />
                           </SelectTrigger>

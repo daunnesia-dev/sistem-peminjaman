@@ -1,6 +1,8 @@
 import BooksLoans from "@/components/dashboard/books-loans";
-import AddButton from "@/components/dashboard/books-loans/add-button";
+import AddModal from "@/components/dashboard/books-loans/add-modal";
+import { Button } from "@/ui/button";
 import { auth } from "@clerk/nextjs";
+import { PlusIcon } from "@radix-ui/react-icons";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FC, Suspense } from "react";
@@ -26,7 +28,12 @@ const page: FC = async () => {
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <AddButton />
+          <AddModal>
+            <Button>
+              <PlusIcon className="w-4 h-4 mr-2" />
+              Pinjam Buku
+            </Button>
+          </AddModal>
         </div>
       </div>
       <Suspense>

@@ -1,13 +1,13 @@
 "use client";
-import { Button } from "@/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableRow } from "@/ui/table";
+
 import { getBookById } from "@/helpers/dashboard/books-data/get-book-by-id";
 import { cn } from "@/lib/utils";
+import { Button } from "@/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@/ui/table";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import React from "react";
-import { DatePickerWithRange } from "./DatePickerWithRange";
-import { DateRange } from "react-day-picker";
+import AddModal from "../books-loans/add-modal";
 
 type TBookDataDetail = {
   id: string;
@@ -16,10 +16,6 @@ type TBookDataDetail = {
 const BookDataDetail = ({ id }: TBookDataDetail): JSX.Element => {
   const { data, isLoading, error } = getBookById(id);
   const [isShowMore, setIsShowMore] = React.useState<boolean>(false);
-
-  const handleBookLoan = () => {
-    console.log("book loan");
-  };
 
   return (
     <>
@@ -54,13 +50,18 @@ const BookDataDetail = ({ id }: TBookDataDetail): JSX.Element => {
                   alt="cover image"
                 />
                 <div className="flex flex-col gap-2 py-2">
-                  <Button
-                    onClick={handleBookLoan}
-                    className={cn("w-full")}
-                    variant="default"
-                  >
-                    Pinjam Buku
-                  </Button>
+                  <AddModal idBuku={id}>
+                    <Button
+                      className={cn(
+                        "w-full",
+                        data.stok === 0 && "cursor-not-allowed"
+                      )}
+                      variant="default"
+                      disabled={data.stok === 0}
+                    >
+                      Pinjam Buku
+                    </Button>
+                  </AddModal>
                 </div>
               </div>
             </div>
