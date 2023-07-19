@@ -2,6 +2,7 @@
 "use client";
 
 import DetailButton from "@/components/dashboard/rooms-loans/detail-button";
+import { batalkanRoomsLoans } from "@/helpers/dashboard/rooms-loans/batalkan-rooms-loans";
 import { kembalikanRoomsLoans } from "@/helpers/dashboard/rooms-loans/kembalikan-rooms-loans";
 import { updateDiterimaRoomsLoans } from "@/helpers/dashboard/rooms-loans/update-diterima-rooms-loans";
 import { updateDitolakRoomsLoans } from "@/helpers/dashboard/rooms-loans/update-ditolak-rooms-loans";
@@ -53,6 +54,12 @@ export function DataTableRowActions<TData>({
     isError: isUpdateDitolakStatusError,
   } = updateDitolakRoomsLoans();
   const {
+    isSuccess: isBatalkanRoomsLoansSuccess,
+    mutate: batalkanRoomsLoansById,
+    isLoading: isBatalkanRoomsLoansLoading,
+    isError: isBatalkanRoomsLoansError,
+  } = batalkanRoomsLoans();
+  const {
     isSuccess: isKembalikanRoomsLoansSuccess,
     mutate: kembalikanRoomsLoansById,
     isLoading: isKembalikanRoomsLoansLoading,
@@ -73,6 +80,12 @@ export function DataTableRowActions<TData>({
 
   const handleUpdateDitolakStatus = () => {
     updateDitolakStatus({
+      id: roomsLoans.id,
+    });
+  };
+
+  const handleBatalkanRoomsLoans = () => {
+    batalkanRoomsLoansById({
       id: roomsLoans.id,
     });
   };
@@ -138,6 +151,24 @@ export function DataTableRowActions<TData>({
       });
     }
   }, [isUpdateDitolakStatusSuccess, isUpdateDitolakStatusError]);
+
+  useEffect(() => {
+    if (isBatalkanRoomsLoansSuccess) {
+      toast({
+        title: "Success",
+        description: "Pembatalan peminjaman ruangan berhasil.",
+      });
+      setOpen(false);
+    }
+
+    if (isBatalkanRoomsLoansError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat membatalkan peminjaman ruangan.",
+      });
+    }
+  }, [isBatalkanRoomsLoansSuccess, isBatalkanRoomsLoansError]);
 
   useEffect(() => {
     if (isKembalikanRoomsLoansSuccess) {
@@ -214,9 +245,20 @@ export function DataTableRowActions<TData>({
           {(!role || role !== "admin") && (
             <>
               {roomsLoans.status === "Pending" && (
-                <DropdownMenuItem className={cn("hover:cursor-pointer")}>
-                  Batalkan
-                </DropdownMenuItem>
+                <>
+                  <DropdownMenuItem className={cn("hover:cursor-pointer")}>
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className={cn("hover:cursor-pointer")}
+                    onClick={() => handleBatalkanRoomsLoans()}
+                  >
+                    {isBatalkanRoomsLoansLoading && (
+                      <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
+                    )}
+                    Batalkan
+                  </DropdownMenuItem>
+                </>
               )}
               {roomsLoans.status === "Direview" && null}
               {roomsLoans.status === "Diterima" && (
