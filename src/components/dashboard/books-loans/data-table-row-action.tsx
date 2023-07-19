@@ -260,7 +260,7 @@ export function DataTableRowActions<TData>({
                   </DropdownMenuItem>
                 </>
               )}
-              {booksLoans.status === "Reviewing" && null}
+              {booksLoans.status === "Direview" && null}
               {booksLoans.status === "Diterima" && (
                 <DropdownMenuItem
                   className={cn("hover:cursor-pointer")}
