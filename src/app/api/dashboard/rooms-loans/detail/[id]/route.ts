@@ -65,7 +65,7 @@ export const GET = async (
       error: null,
       data: {
         id: roomsLoans.id,
-        namaBuku: roomsLoans.room.name,
+        namaRuangan: roomsLoans.room.name,
         tanggalPinjam: new Date(roomsLoans.start).toLocaleDateString("id-ID", {
           weekday: "long",
           year: "numeric",

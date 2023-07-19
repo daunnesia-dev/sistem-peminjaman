@@ -16,6 +16,19 @@ export const updateRoomsLoansAdminProps = z.object({
 export const ApiRoomsLoansAdminUpdateRequestValidator =
   updateRoomsLoansAdminProps;
 
+export const createGetResponseRoomsLoansProps = z.object({
+  id: z.number(),
+  namaRuangan: z.string(),
+  tanggalPinjam: z.string(),
+  tanggalKembali: z.string(),
+  namaPeminjam: z.string(),
+  status: z.string(),
+});
+export const ApiRoomsLoansGetResponseValidator = z.object({
+  error: z.string().nullable(),
+  data: z.array(createGetResponseRoomsLoansProps),
+});
+
 export const updateRoomsLoansFormSchema = z.object({
   id: z.number(),
   tanggalKembali: z.date({
@@ -92,6 +105,7 @@ export const createResponseRoomsLoansProps = z.object({
   namaRuangan: z.string(),
   tanggalPinjam: z.string(),
   tanggalKembali: z.string(),
+  keterangan: z.string(),
   namaPeminjam: z.string(),
   status: z.string(),
 });
