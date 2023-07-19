@@ -1,8 +1,9 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import DetailButton from "@/components/dashboard/rooms-loans/detail-button";
 import { updateDiterimaRoomsLoans } from "@/helpers/dashboard/rooms-loans/update-diterima-rooms-loans";
+import { updateDitolakRoomsLoans } from "@/helpers/dashboard/rooms-loans/update-ditolak-rooms-loans";
 import { updatePendingStatusRoomsLoans } from "@/helpers/dashboard/rooms-loans/update-pending-rooms-loans";
 import { cn } from "@/lib/utils";
 import { createGetResponseRoomsLoansProps } from "@/lib/validator/dashboard/rooms-loans/api";
@@ -44,6 +45,12 @@ export function DataTableRowActions<TData>({
     isLoading: isUpdateDiterimaStatusLoading,
     isError: isUpdateDiterimaStatusError,
   } = updateDiterimaRoomsLoans();
+  const {
+    isSuccess: isUpdateDitolakStatusSuccess,
+    mutate: updateDitolakStatus,
+    isLoading: isUpdateDitolakStatusLoading,
+    isError: isUpdateDitolakStatusError,
+  } = updateDitolakRoomsLoans();
 
   const handleUpdatePendingStatus = () => {
     updatePendingStatus({
@@ -53,6 +60,12 @@ export function DataTableRowActions<TData>({
 
   const handleUpdateDiterimaStatus = () => {
     updateDiterimaStatus({
+      id: roomsLoans.id,
+    });
+  };
+
+  const handleUpdateDitolakStatus = () => {
+    updateDitolakStatus({
       id: roomsLoans.id,
     });
   };
@@ -94,6 +107,25 @@ export function DataTableRowActions<TData>({
     }
   }, [isUpdateDiterimaStatusSuccess, isUpdateDiterimaStatusError]);
 
+  useEffect(() => {
+    if (isUpdateDitolakStatusSuccess) {
+      toast({
+        title: "Success",
+        description: "Status peminjaman ruangan telah diubah menjadi ditolak.",
+      });
+      setOpen(false);
+    }
+
+    if (isUpdateDitolakStatusError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description:
+          "Terjadi kesalahan saat memperbarui status peminjaman ruangan.",
+      });
+    }
+  }, [isUpdateDitolakStatusSuccess, isUpdateDitolakStatusError]);
+
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild onClick={() => setOpen(!open)}>
@@ -132,7 +164,13 @@ export function DataTableRowActions<TData>({
                     )}
                     Terima
                   </DropdownMenuItem>
-                  <DropdownMenuItem className={cn("hover:cursor-pointer")}>
+                  <DropdownMenuItem
+                    className={cn("hover:cursor-pointer")}
+                    onClick={() => handleUpdateDitolakStatus()}
+                  >
+                    {isUpdateDitolakStatusLoading && (
+                      <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
+                    )}
                     Tolak
                   </DropdownMenuItem>
                 </>
