@@ -3,12 +3,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { z } from "zod";
 
-export const batalkanBooksLoans = () => {
+export const kembalikanBooksLoans = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation(
     async (newData: z.infer<any>) => {
       const { data } = await axios.delete(
-        `/api/dashboard/books-loans/update/batalkan-books-loans/${newData.id}`,
+        `/api/dashboard/books-loans/update/kembalikan-books-loans/${newData.id}`,
         {
           headers: {
             "Cache-Control": "no-store",
@@ -30,6 +30,9 @@ export const batalkanBooksLoans = () => {
         });
         queryClient.invalidateQueries({
           queryKey: ["detailBooksLoans"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["booksLoansHistory"],
         });
       },
     }
