@@ -2,6 +2,7 @@
 "use client";
 
 import DetailButton from "@/components/dashboard/books-loans/detail-button";
+import EditButton from "@/components/dashboard/books-loans/edit-button";
 import { batalkanBooksLoans } from "@/helpers/dashboard/books-loans/batalkan-books-loans";
 import { updateDiterimaBooksLoans } from "@/helpers/dashboard/books-loans/update-diterima-books-loans";
 import { updateDitolakBooksLoans } from "@/helpers/dashboard/books-loans/update-ditolak-books-loans";
@@ -216,9 +217,7 @@ export function DataTableRowActions<TData>({
             <>
               {booksLoans.status === "Pending" && (
                 <>
-                  <DropdownMenuItem className={cn("hover:cursor-pointer")}>
-                    Edit
-                  </DropdownMenuItem>
+                  <EditButton id={booksLoans.id} />
                   <DropdownMenuItem
                     className={cn("hover:cursor-pointer")}
                     onClick={() => handleBatalkanBooksLoans()}
