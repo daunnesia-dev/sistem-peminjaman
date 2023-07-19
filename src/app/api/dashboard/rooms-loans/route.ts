@@ -1,9 +1,5 @@
 import { db } from "@/lib/db";
-import {
-  ApiRoomsLoansGetResponseValidator,
-  ApiRoomsLoansResponseValidator,
-  createRoomsLoansProps,
-} from "@/lib/validator/dashboard/rooms-loans/api";
+import { ApiRoomsLoansGetResponseValidator } from "@/lib/validator/dashboard/rooms-loans/api";
 import { currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -92,7 +88,7 @@ export const GET = async (req: NextRequest) => {
         { status: 500 }
       );
     }
-  } else if (!role || role !== "admin") {
+  } else {
     try {
       const roomsLoans = await db.loanRoom.findMany({
         select: {
@@ -128,7 +124,7 @@ export const GET = async (req: NextRequest) => {
         },
       });
 
-      const response = ApiRoomsLoansResponseValidator.parse({
+      const response = ApiRoomsLoansGetResponseValidator.parse({
         error: null,
         data: roomsLoans.map((room) => ({
           id: room.id,
@@ -169,7 +165,5 @@ export const GET = async (req: NextRequest) => {
         { status: 500 }
       );
     }
-  } else {
-    return NextResponse.json("Unauthorized", { status: 401 });
   }
 };
