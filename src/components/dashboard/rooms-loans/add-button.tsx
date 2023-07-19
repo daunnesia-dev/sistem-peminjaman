@@ -168,7 +168,12 @@ export default function AddButton() {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              <SelectLabel>Ruangan</SelectLabel>
+                              {rooms.length === 0 && (
+                                <SelectLabel>Ruangan tidak tersedia</SelectLabel>
+                              )}
+                              {rooms.length > 0 && (
+                                <SelectLabel>Ruangan</SelectLabel>
+                              )}
                               {rooms.map((room) => (
                                 <SelectItem
                                   key={`ruangan-${room.id}`}
