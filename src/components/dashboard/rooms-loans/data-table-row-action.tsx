@@ -2,6 +2,7 @@
 "use client";
 
 import DetailButton from "@/components/dashboard/rooms-loans/detail-button";
+import { kembalikanRoomsLoans } from "@/helpers/dashboard/rooms-loans/kembalikan-rooms-loans";
 import { updateDiterimaRoomsLoans } from "@/helpers/dashboard/rooms-loans/update-diterima-rooms-loans";
 import { updateDitolakRoomsLoans } from "@/helpers/dashboard/rooms-loans/update-ditolak-rooms-loans";
 import { updatePendingStatusRoomsLoans } from "@/helpers/dashboard/rooms-loans/update-pending-rooms-loans";
@@ -51,6 +52,12 @@ export function DataTableRowActions<TData>({
     isLoading: isUpdateDitolakStatusLoading,
     isError: isUpdateDitolakStatusError,
   } = updateDitolakRoomsLoans();
+  const {
+    isSuccess: isKembalikanRoomsLoansSuccess,
+    mutate: kembalikanRoomsLoansById,
+    isLoading: isKembalikanRoomsLoansLoading,
+    isError: isKembalikanRoomsLoansError,
+  } = kembalikanRoomsLoans();
 
   const handleUpdatePendingStatus = () => {
     updatePendingStatus({
@@ -66,6 +73,12 @@ export function DataTableRowActions<TData>({
 
   const handleUpdateDitolakStatus = () => {
     updateDitolakStatus({
+      id: roomsLoans.id,
+    });
+  };
+
+  const handleKembalikanRoomsLoans = () => {
+    kembalikanRoomsLoansById({
       id: roomsLoans.id,
     });
   };
@@ -126,6 +139,24 @@ export function DataTableRowActions<TData>({
     }
   }, [isUpdateDitolakStatusSuccess, isUpdateDitolakStatusError]);
 
+  useEffect(() => {
+    if (isKembalikanRoomsLoansSuccess) {
+      toast({
+        title: "Success",
+        description: "Pengembalian peminjaman ruangan berhasil.",
+      });
+      setOpen(false);
+    }
+
+    if (isKembalikanRoomsLoansError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat mengembalikan peminjaman ruangan.",
+      });
+    }
+  }, [isKembalikanRoomsLoansSuccess, isKembalikanRoomsLoansError]);
+
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild onClick={() => setOpen(!open)}>
@@ -180,22 +211,27 @@ export function DataTableRowActions<TData>({
                 null}
             </>
           )}
-          {!role ||
-            (role !== "admin" && (
-              <>
-                {roomsLoans.status === "Pending" && (
-                  <DropdownMenuItem className={cn("hover:cursor-pointer")}>
-                    Batalkan
-                  </DropdownMenuItem>
-                )}
-                {roomsLoans.status === "Reviewing" && null}
-                {roomsLoans.status === "Diterima" && (
-                  <DropdownMenuItem className={cn("hover:cursor-pointer")}>
-                    Kembalikan
-                  </DropdownMenuItem>
-                )}
-              </>
-            ))}
+          {(!role || role !== "admin") && (
+            <>
+              {roomsLoans.status === "Pending" && (
+                <DropdownMenuItem className={cn("hover:cursor-pointer")}>
+                  Batalkan
+                </DropdownMenuItem>
+              )}
+              {roomsLoans.status === "Direview" && null}
+              {roomsLoans.status === "Diterima" && (
+                <DropdownMenuItem
+                  className={cn("hover:cursor-pointer")}
+                  onClick={() => handleKembalikanRoomsLoans()}
+                >
+                  {isKembalikanRoomsLoansLoading && (
+                    <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
+                  )}
+                  Kembalikan
+                </DropdownMenuItem>
+              )}
+            </>
+          )}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
