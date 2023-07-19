@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
+import { updateBooksLoans } from "@/helpers/dashboard/books-loans/update-books-loans";
 import { updateDetailBooksLoans } from "@/helpers/dashboard/books-loans/update-detail-books-loans";
 import { cn } from "@/lib/utils";
 import { bookLoansFormSchema } from "@/lib/validator/dashboard/book-loans/api";
@@ -54,6 +55,12 @@ export default function DetailButton({ id }: { id: number }) {
     isLoading: boolean;
     error: any;
   } = updateDetailBooksLoans(id, isOpen);
+  const {
+    isSuccess: isUpdateSuccess,
+    mutate: updateMutate,
+    isLoading: isUpdateLoading,
+    isError: isUpdateError,
+  } = updateBooksLoans();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -83,18 +90,26 @@ export default function DetailButton({ id }: { id: number }) {
   }, [data, error, form]);
 
   function onSubmit(values: z.infer<typeof bookLoansFormSchema>) {
-    console.log(
-      JSON.stringify(
-        {
-          id: id,
-          quantity: values.quantity,
-          tanggalKembali: values.tanggalKembali,
-        },
-        null,
-        2
-      )
-    );
+    updateMutate({ id, ...values });
   }
+
+  useEffect(() => {
+    if (isUpdateSuccess) {
+      toast({
+        title: "Success",
+        description: "Peminjaman buku berhasil diperbarui",
+      });
+      setIsOpen(false);
+    }
+
+    if (isUpdateError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat memperbarui peminjaman buku",
+      });
+    }
+  }, [isUpdateSuccess, isUpdateError]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -250,8 +265,8 @@ export default function DetailButton({ id }: { id: number }) {
                 )}
               />
               <DialogFooter>
-                <Button type="submit" disabled={isLoading}>
-                  {isLoading && (
+                <Button type="submit" disabled={isLoading || isUpdateLoading}>
+                  {(isLoading || isUpdateLoading) && (
                     <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
                   )}
                   Perbarui
