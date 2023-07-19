@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
+import DetailButton from "@/components/dashboard/rooms-loans/detail-button";
 import { updatePendingStatusRoomsLoans } from "@/helpers/dashboard/rooms-loans/update-pending-rooms-loans";
 import { cn } from "@/lib/utils";
-import { createResponseRoomsLoansProps } from "@/lib/validator/dashboard/rooms-loans/api";
+import { createGetResponseRoomsLoansProps } from "@/lib/validator/dashboard/rooms-loans/api";
 import { Button } from "@/ui/button";
 import {
   DropdownMenu,
@@ -27,7 +28,7 @@ export function DataTableRowActions<TData>({
 }: DataTableRowActionsProps<TData>) {
   const { user } = useUser();
   const role = user?.publicMetadata.role;
-  const roomsLoans = createResponseRoomsLoansProps.parse(row.original);
+  const roomsLoans = createGetResponseRoomsLoansProps.parse(row.original);
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const {
@@ -74,9 +75,7 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuGroup onClick={() => setOpen(true)}>
-          <DropdownMenuItem className={cn("hover:cursor-pointer")}>
-            Detail
-          </DropdownMenuItem>
+          <DetailButton id={roomsLoans.id} />
           {role === "admin" && (
             <>
               {roomsLoans.status === "Pending" && (
