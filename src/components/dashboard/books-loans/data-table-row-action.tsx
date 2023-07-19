@@ -4,6 +4,7 @@
 import DetailButton from "@/components/dashboard/books-loans/detail-button";
 import EditButton from "@/components/dashboard/books-loans/edit-button";
 import { batalkanBooksLoans } from "@/helpers/dashboard/books-loans/batalkan-books-loans";
+import { kembalikanBooksLoans } from "@/helpers/dashboard/books-loans/kembalikan-books-loans";
 import { updateDiterimaBooksLoans } from "@/helpers/dashboard/books-loans/update-diterima-books-loans";
 import { updateDitolakBooksLoans } from "@/helpers/dashboard/books-loans/update-ditolak-books-loans";
 import { updatePendingBooksLoans } from "@/helpers/dashboard/books-loans/update-pending-books-loans";
@@ -59,6 +60,12 @@ export function DataTableRowActions<TData>({
     isLoading: isBatalkanBooksLoansLoading,
     isError: isBatalkanBooksLoansError,
   } = batalkanBooksLoans();
+  const {
+    isSuccess: isKembalikanBooksLoansSuccess,
+    mutate: kembalikanBooksLoansById,
+    isLoading: isKembalikanBooksLoansLoading,
+    isError: isKembalikanBooksLoansError,
+  } = kembalikanBooksLoans();
 
   const handleUpdatePendingStatus = () => {
     updatePendingStatus({
@@ -80,6 +87,12 @@ export function DataTableRowActions<TData>({
 
   const handleBatalkanBooksLoans = () => {
     batalkanBooksLoansById({
+      id: booksLoans.id,
+    });
+  };
+
+  const handleKembalikanBooksLoans = () => {
+    kembalikanBooksLoansById({
       id: booksLoans.id,
     });
   };
@@ -139,6 +152,24 @@ export function DataTableRowActions<TData>({
       });
     }
   }, [isBatalkanBooksLoansSuccess, isBatalkanBooksLoansError]);
+
+  useEffect(() => {
+    if (isKembalikanBooksLoansSuccess) {
+      toast({
+        title: "Success",
+        description: "Pengembalian peminjaman buku berhasil.",
+      });
+      setOpen(false);
+    }
+
+    if (isKembalikanBooksLoansError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat mengembalikan peminjaman buku.",
+      });
+    }
+  }, [isKembalikanBooksLoansSuccess, isKembalikanBooksLoansError]);
 
   useEffect(() => {
     if (isUpdateDitolakStatusSuccess) {
@@ -231,7 +262,13 @@ export function DataTableRowActions<TData>({
               )}
               {booksLoans.status === "Reviewing" && null}
               {booksLoans.status === "Diterima" && (
-                <DropdownMenuItem className={cn("hover:cursor-pointer")}>
+                <DropdownMenuItem
+                  className={cn("hover:cursor-pointer")}
+                  onClick={() => handleKembalikanBooksLoans()}
+                >
+                  {isKembalikanBooksLoansLoading && (
+                    <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
+                  )}
                   Kembalikan
                 </DropdownMenuItem>
               )}

@@ -7,7 +7,7 @@ export const kembalikanBooksLoans = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation(
     async (newData: z.infer<any>) => {
-      const { data } = await axios.delete(
+      const { data } = await axios.put(
         `/api/dashboard/books-loans/update/kembalikan-books-loans/${newData.id}`,
         {
           headers: {
