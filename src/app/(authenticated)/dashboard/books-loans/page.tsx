@@ -1,10 +1,10 @@
 import BooksLoans from "@/components/dashboard/books-loans";
 import AddModal from "@/components/dashboard/books-loans/add-modal";
 import { Button } from "@/ui/button";
-import { auth } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { FC, Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -12,10 +12,17 @@ export const metadata: Metadata = {
 };
 
 const page: FC = async () => {
-  const { userId } = auth();
+  const user = await currentUser();
+  const isProfileComplete =
+    user?.publicMetadata.phoneNumber || user?.publicMetadata.address;
+  const role = user?.publicMetadata.role;
 
-  if (!userId) {
+  if (!user) {
     return notFound();
+  }
+
+  if (!isProfileComplete && role !== "admin") {
+    redirect("/dashboard/account/settings");
   }
 
   return (

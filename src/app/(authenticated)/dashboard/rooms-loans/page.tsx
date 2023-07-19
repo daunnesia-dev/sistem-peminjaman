@@ -1,8 +1,8 @@
 import RoomsLoans from "@/components/dashboard/rooms-loans";
 import AddButton from "@/components/dashboard/rooms-loans/add-button";
-import { auth } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { FC, Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -10,10 +10,17 @@ export const metadata: Metadata = {
 };
 
 const page: FC = async () => {
-  const { userId } = auth();
+  const user = await currentUser();
+  const isProfileComplete =
+    user?.publicMetadata.phoneNumber || user?.publicMetadata.address;
+  const role = user?.publicMetadata.role;
 
-  if (!userId) {
+  if (!user) {
     return notFound();
+  }
+
+  if (!isProfileComplete && role !== "admin") {
+    redirect("/dashboard/account/settings");
   }
 
   return (
