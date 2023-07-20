@@ -45,6 +45,18 @@ export const sidebarConfig: SidebarConfig = {
           role: "admin",
         },
         {
+          title: "Master Ruangan",
+          href: "/dashboard/rooms",
+          items: [],
+          role: "admin",
+        },
+      ],
+      role: "admin",
+    },
+    {
+      title: "Inventaris Buku",
+      items: [
+        {
           title: "Data Buku",
           href: "/dashboard/books-data",
           items: [],
@@ -59,12 +71,11 @@ export const sidebarConfig: SidebarConfig = {
           href: "/dashboard/books-loans-history",
           items: [],
         },
-        {
-          title: "Master Ruangan",
-          href: "/dashboard/rooms",
-          items: [],
-          role: "admin",
-        },
+      ],
+    },
+    {
+      title: "Inventaris Ruangan",
+      items: [
         {
           title: "Peminjaman Ruangan",
           href: "/dashboard/rooms-loans",
