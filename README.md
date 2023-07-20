@@ -16,7 +16,9 @@ Sistem peminjaman adalah sebuah sistem yang digunakan untuk mengelola peminjaman
 ## 📦 Installation
 
 1. Clone this repository
+
 2. Install all dependencies using pnpm install
+
 3. Pull the latest changes from environment variables
    ```bash
    npx dotenv-vault@latest pull
@@ -34,11 +36,11 @@ Sistem peminjaman adalah sebuah sistem yang digunakan untuk mengelola peminjaman
    ./ngrok http 3000
    ```
 
-If you are using ngrok with static domain, you can run this command instead.
+   If you are using ngrok with static domain, you can run this command instead. **(Recommended)**
 
-```bash
-ngrok http --domain <your-ngrok-domain> 3000
-```
+   ```bash
+   ngrok http --domain <your-ngrok-domain> 3000
+   ```
 
 3. Copy the ngrok url and paste it to note, you will need it later.
 4. Login to Clerk dahboard using admin account. Then go to webhooks and add api endpoint to the webhook.
