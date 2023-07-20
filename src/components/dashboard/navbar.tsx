@@ -23,7 +23,7 @@ const Navbar: FC = async () => {
         </div>
 
         <Button className={cn("px-0 lg:hidden")} variant="link" asChild>
-          <Link href="/dashboard">Teknologi Rekayasa Komputer 💻</Link>
+          <Link href="/dashboard">Teknologi Rekayasa Komputer</Link>
         </Button>
 
         <div className="lg:hidden">
