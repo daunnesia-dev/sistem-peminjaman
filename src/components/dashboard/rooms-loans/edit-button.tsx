@@ -2,10 +2,11 @@
 "use client";
 
 import { Textarea } from "@/components/ui/textarea";
-import { updateRoomsLoans } from "@/helpers/dashboard/rooms-loans/update-rooms-loans";
+import { charCounter } from "@/helpers/char-counter";
 import { updateDetailRoomsLoans } from "@/helpers/dashboard/rooms-loans/update-detail-rooms-loans";
+import { updateRoomsLoans } from "@/helpers/dashboard/rooms-loans/update-rooms-loans";
 import { cn } from "@/lib/utils";
-import { bookLoansFormSchema } from "@/lib/validator/dashboard/book-loans/api";
+import { roomLoansFormSchema } from "@/lib/validator/dashboard/rooms-loans/api";
 import { Button } from "@/ui/button";
 import { Calendar } from "@/ui/calendar";
 import {
@@ -29,6 +30,7 @@ import { Input } from "@/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/popover";
 import { useToast } from "@/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useDebouncedValue } from "@mantine/hooks";
 import { CalendarIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import idLocale from "date-fns/locale/id";
@@ -36,11 +38,19 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+interface HandleChangeProps {
+  e: React.ChangeEvent<HTMLTextAreaElement>;
+  name: "keterangan";
+  limit: number;
+  setState: any;
+}
+
 export default function EditButton({ id }: { id: number }) {
-  const form = useForm<z.infer<any>>({
-    // resolver: zodResolver(bookLoansFormSchema),
+  const [keterangan, setKeterangan] = useState("");
+  const form = useForm<z.infer<typeof roomLoansFormSchema>>({
+    resolver: zodResolver(roomLoansFormSchema),
     defaultValues: {
-      name: "",
+      roomId: "",
       tanggalPinjam: new Date(),
       keterangan: "",
     },
@@ -63,6 +73,18 @@ export default function EditButton({ id }: { id: number }) {
     isError: isUpdateError,
   } = updateRoomsLoans();
   const { toast } = useToast();
+  const [debounced] = useDebouncedValue(keterangan, 200);
+
+  const handleChange = ({ e, name, limit, setState }: HandleChangeProps) => {
+    const inputValue = e.target.value;
+    if (inputValue.length <= limit) {
+      setState(inputValue);
+      form.setValue(name, inputValue);
+    } else {
+      setState(inputValue.slice(0, limit));
+      form.setValue(name, inputValue.slice(0, limit));
+    }
+  };
 
   useEffect(() => {
     if (tanggalKembali) {
@@ -72,12 +94,11 @@ export default function EditButton({ id }: { id: number }) {
 
   useEffect(() => {
     if (data) {
-
-      console.log(data)
-      form.setValue("name", data.room.name);
+      form.setValue("roomId", data.room.name);
       form.setValue("tanggalPinjam", new Date(data.start));
       setTanggalKembali(new Date(data.end));
       form.setValue("tanggalKembali", new Date(data.end));
+      setKeterangan(data.keterangan);
       form.setValue("keterangan", data.keterangan);
     }
 
@@ -136,7 +157,7 @@ export default function EditButton({ id }: { id: number }) {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}
-                name="name"
+                name="roomId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
@@ -256,7 +277,29 @@ export default function EditButton({ id }: { id: number }) {
                       </span>
                     </FormLabel>
                     <FormControl>
-                      <Textarea {...field} />
+                      <div className={cn("space-y-4")}>
+                        <Textarea
+                          placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis velit eleifend tortor lacinia placerat. Morbi non tortor augue. Nam vel iaculis sapien. Nunc aliquet risus id nibh accumsan faucibus. Curabitur lacus sem, egestas at aliquam eu, viverra non sem. Donec tristique tincidunt magna, ut mi."
+                          {...field}
+                          value={keterangan}
+                          onChange={(e) =>
+                            handleChange({
+                              e,
+                              name: "keterangan",
+                              limit: 300,
+                              setState: setKeterangan,
+                            })
+                          }
+                          className="resize-none"
+                          required
+                        />
+                        <div className="flex justify-start md:justify-end">
+                          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                            Sisa karakter {charCounter(debounced, 300)}
+                          </p>
+                        </div>
+                        <FormMessage />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

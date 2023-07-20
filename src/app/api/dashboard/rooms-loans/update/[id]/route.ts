@@ -18,29 +18,32 @@ export const PUT = async (
     return NextResponse.json("Unauthorized", { status: 401 });
   }
 
-  try {
-    const body: any = await req.json(); // Update this line to use req.json()
+  const id = parseInt(params.id.toString());
 
-    const findBookLoans = await db.loanRoom.findFirst({
+  try {
+    const body = await req.json();
+    const { tanggalKembali, keterangan } =
+      ApiRoomsLoansRequestValidator.parse(body);
+
+    await db.loanRoom.findFirst({
       where: {
-        id: body.id,
+        id: id,
+        Status: {
+          keterangan: "Pending",
+        },
       },
       include: {
         room: true,
       },
     });
 
-    if (!findBookLoans) {
-      return NextResponse.json("Unprocessable entity", { status: 422 });
-    }
-
     const updateRoomLoans = await db.loanRoom.update({
       where: {
-        id: body.id,
+        id: id,
       },
       data: {
-        keterangan: body.keterangan,
-        end: body.tanggalKembali,
+        end: tanggalKembali,
+        keterangan: keterangan,
       },
     });
 
@@ -49,6 +52,6 @@ export const PUT = async (
       data: updateRoomLoans,
     });
   } catch (error) {
-    return NextResponse.json("Internal Server Error", { status: 500 });
+    return NextResponse.json("Unprocessable entity", { status: 422 });
   }
 };

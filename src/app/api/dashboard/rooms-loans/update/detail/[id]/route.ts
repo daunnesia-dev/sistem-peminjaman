@@ -40,9 +40,9 @@ export const GET = async (
             name: true,
           },
         },
-        keterangan: true,
         start: true,
         end: true,
+        keterangan: true,
         Status: {
           select: {
             id: true,

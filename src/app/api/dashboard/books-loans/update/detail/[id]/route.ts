@@ -1,5 +1,4 @@
 import { db } from "@/lib/db";
-import { ApiBooksLoansDetailResponseValidator } from "@/lib/validator/dashboard/book-loans/api";
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
