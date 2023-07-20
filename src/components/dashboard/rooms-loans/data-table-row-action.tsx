@@ -22,6 +22,7 @@ import { useUser } from "@clerk/nextjs";
 import { DotsHorizontalIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
+import EditButton from "./edit-button";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -246,9 +247,7 @@ export function DataTableRowActions<TData>({
             <>
               {roomsLoans.status === "Pending" && (
                 <>
-                  <DropdownMenuItem className={cn("hover:cursor-pointer")}>
-                    Edit
-                  </DropdownMenuItem>
+                  <EditButton id={roomsLoans.id} />
                   <DropdownMenuItem
                     className={cn("hover:cursor-pointer")}
                     onClick={() => handleBatalkanRoomsLoans()}
