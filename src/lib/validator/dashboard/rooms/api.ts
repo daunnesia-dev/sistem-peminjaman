@@ -27,7 +27,13 @@ export const ApiRoomsRequestValidator = roomFormSchema;
 
 export const ApiRoomsResponseValidator = z.object({
   error: z.string().nullable(),
-  data: z.array(createRoomsProps),
+  data: z.array(
+    z.object({
+      id: z.number(),
+      name: z.string(),
+      tersedia: z.boolean(),
+    })
+  ),
 });
 
 export const ApiRoomsDeleteResponseValidator = z.object({
