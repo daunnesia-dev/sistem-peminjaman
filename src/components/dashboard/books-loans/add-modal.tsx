@@ -97,6 +97,8 @@ export default function AddModal({
   }, [data, error]);
 
   function onSubmit(values: z.infer<typeof bookLoansFormSchema>) {
+    const tanggalKembali = new Date(values.tanggalKembali);
+    values = { ...values, tanggalKembali };
     mutateStore(values);
     form.reset();
     setTanggalKembali(undefined);
@@ -142,40 +144,40 @@ export default function AddModal({
                       *
                     </span>
                   </FormLabel>
-                  <FormControl>
-                    <div className={cn("space-y-4")}>
-                      {isLoading && <p>Loading...</p>}
-                      {!isLoading && (
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
+                  <div className={cn("space-y-4")}>
+                    {isLoading && <p>Loading...</p>}
+                    {!isLoading && (
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Buku" />
                           </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              {books.length === 0 && (
-                                <SelectLabel>Buku tidak tersedia</SelectLabel>
-                              )}
-                              {books.length > 0 && (
-                                <SelectLabel>Buku</SelectLabel>
-                              )}
-                              {books.map((book: any) => (
-                                <SelectItem
-                                  key={`buku-${book.id}`}
-                                  value={book.id.toString()}
-                                >
-                                  {book.judul}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                      )}
-                      <FormMessage />
-                    </div>
-                  </FormControl>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectGroup>
+                            {books.length === 0 && (
+                              <SelectLabel>Buku tidak tersedia</SelectLabel>
+                            )}
+                            {books.length > 0 && (
+                              <SelectLabel>Buku</SelectLabel>
+                            )}
+                            {books.map((book: any) => (
+                              <SelectItem
+                                key={`buku-${book.id}`}
+                                value={book.id.toString()}
+                              >
+                                {book.judul}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
