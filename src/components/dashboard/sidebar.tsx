@@ -4,10 +4,13 @@ import SidebarItem from "@/components/dashboard/sidebar-item";
 import { sidebarConfig } from "@/data/sidebar";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/ui/scroll-area";
+import { useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const user = useUser();
+  const role = user.user?.publicMetadata.role;
 
   return (
     <aside
@@ -19,9 +22,17 @@ export default function Sidebar() {
           <div className="w-full">
             {sidebarConfig.sidebarNav.map((item, index) => (
               <div key={index} className={cn("pb-4")}>
-                <h4 className="py-1 mb-1 text-sm font-semibold rounded-md">
-                  {item.title}
-                </h4>
+                {role === "admin" ? (
+                  <h4 className="py-1 mb-1 text-sm font-semibold rounded-md">
+                    {item.title}
+                  </h4>
+                ) : (
+                  item.role !== "admin" && (
+                    <h4 className="py-1 mb-1 text-sm font-semibold rounded-md">
+                      {item.title}
+                    </h4>
+                  )
+                )}
                 {item?.items?.length && (
                   <SidebarItem items={item.items} pathname={pathname} />
                 )}

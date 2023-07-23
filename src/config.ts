@@ -20,6 +20,6 @@ export const SITE = {
       url: "https://deri-kurniawan.my.id",
     },
   ],
-  creator: ["Ikram Maulana", "Deri Kurniawan"],
+  creator: "Daunnesia",
   themeColor: "#F9F5EB",
 };
