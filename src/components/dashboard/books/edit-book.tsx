@@ -37,6 +37,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import ImageUploader from "./image-uploader";
+import { getBookLocations } from "@/helpers/dashboard/book-locations/get-book-locations";
 
 interface HandleChangeProps {
   e: React.ChangeEvent<HTMLTextAreaElement>;
@@ -48,6 +49,7 @@ interface HandleChangeProps {
     | "penerbit"
     | "penulis"
     | "stok"
+    | "lokasiBuku"
     | "category";
   limit: number;
   setState: any;
@@ -64,6 +66,7 @@ const EditBook = ({ id }: { id: number }) => {
       penerbit: "",
       penulis: "",
       stok: "",
+      lokasiBuku: "",
       category: "",
     },
   });
@@ -72,8 +75,15 @@ const EditBook = ({ id }: { id: number }) => {
     isLoading: isLoadingCategories,
     error: errorCategories,
   } = getCategories();
+  const {
+    data: dataLokasi,
+    isLoading: isLoadingLokasi,
+    error: errorLokasi,
+  } = getBookLocations();
   const [categories, setCategories] = useState([{ id: "", name: "" }]);
   const [categoryId, setCategoryId] = useState("");
+  const [lokasiBuku, setLokasiBuku] = useState([{ id: "", name: "" }]);
+  const [lokasiBukuId, setLokasiBukuId] = useState("");
   const [coverImage, setCoverImage] = useState("");
   const [sinopsis, setSinopsis] = useState("");
   const [debounced] = useDebouncedValue(sinopsis, 200);
@@ -113,6 +123,20 @@ const EditBook = ({ id }: { id: number }) => {
   }, [dataCategories, errorCategories]);
 
   useEffect(() => {
+    if (dataLokasi) {
+      setLokasiBuku(dataLokasi);
+    }
+
+    if (errorLokasi) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat mengambil data lokasi buku",
+      });
+    }
+  }, [dataLokasi, errorLokasi]);
+
+  useEffect(() => {
     if (coverImage !== "") {
       form.setValue("coverImage", coverImage);
     }
@@ -129,6 +153,8 @@ const EditBook = ({ id }: { id: number }) => {
       form.setValue("penerbit", data.penerbit);
       form.setValue("penulis", data.penulis);
       form.setValue("stok", data.stok.toString());
+      form.setValue("lokasiBuku", data.locationId.toString());
+      setLokasiBukuId(data.locationId.toString());
       form.setValue("category", data.categoryId.toString());
       setCategoryId(data.categoryId.toString());
     }
@@ -137,7 +163,7 @@ const EditBook = ({ id }: { id: number }) => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Terjadi kesalahan saat mengambil data kategori buku",
+        description: "Terjadi kesalahan saat mengambil detail data buku",
       });
     }
   }, [data, error, setCoverImage, setSinopsis, form]);
@@ -335,6 +361,46 @@ const EditBook = ({ id }: { id: number }) => {
                       Sisa karakter {charCounter(debounced, 10000)}
                     </p>
                   </div>
+                  <FormMessage />
+                </div>
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="lokasiBuku"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Lokasi Buku
+                <span className="ml-1 text-sm text-red-500 dark:text-red-400">
+                  *
+                </span>
+              </FormLabel>
+              <FormControl>
+                <div className={cn("space-y-4")}>
+                  {isLoadingLokasi && <p>Loading...</p>}
+                  {!isLoadingLokasi && (
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Lokasi Buku" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Lokasi</SelectLabel>
+                          {lokasiBuku.map((lokasi) => (
+                            <SelectItem
+                              key={`lokasi-${lokasi.id}`}
+                              value={lokasi.id.toString()}
+                            >
+                              {lokasi.name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
                   <FormMessage />
                 </div>
               </FormControl>
