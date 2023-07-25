@@ -37,12 +37,12 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuGroup onClick={() => setOpen(true)}>
-          {/* <EditButton id={category.id} />
+          {/* <EditButton id={category.id} /> */}
           <DeleteButton
-            id={category.id}
-            name={category.name}
+            id={bookLocations.id}
+            name={bookLocations.name}
             setOpen={setOpen}
-          /> */}
+          />
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
