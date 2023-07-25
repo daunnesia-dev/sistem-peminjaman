@@ -2,6 +2,7 @@
 "use client";
 
 import { detailBookLocations } from "@/helpers/dashboard/book-locations/detail-book-locations";
+import { updateBookLocations } from "@/helpers/dashboard/book-locations/update-book-locations";
 import { cn } from "@/lib/utils";
 import { bookLocationsFormSchema } from "@/lib/validator/dashboard/book-locations/api";
 import { Button } from "@/ui/button";
@@ -39,16 +40,16 @@ export default function EditButton({ id }: { id: number }) {
   });
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading, error } = detailBookLocations(id, isOpen);
-  // const {
-  //   isSuccess: isUpdateSuccess,
-  //   mutate: updateMutate,
-  //   isLoading: isUpdateLoading,
-  //   isError: isUpdateError,
-  // } = updateCategories();
+  const {
+    isSuccess: isUpdateSuccess,
+    mutate: updateMutate,
+    isLoading: isUpdateLoading,
+    isError: isUpdateError,
+  } = updateBookLocations();
   const { toast } = useToast();
 
   const onUpdateHandler = (values: z.infer<typeof bookLocationsFormSchema>) => {
-    // updateMutate({ id, ...values });
+    updateMutate({ id, ...values });
   };
 
   useEffect(() => {
@@ -67,23 +68,23 @@ export default function EditButton({ id }: { id: number }) {
     }
   }, [data, error, form]);
 
-  // useEffect(() => {
-  //   if (isUpdateSuccess) {
-  //     toast({
-  //       title: "Success",
-  //       description: "Lokasi buku berhasil diperbarui",
-  //     });
-  //     setIsOpen(false);
-  //   }
+  useEffect(() => {
+    if (isUpdateSuccess) {
+      toast({
+        title: "Success",
+        description: "Lokasi buku berhasil diperbarui",
+      });
+      setIsOpen(false);
+    }
 
-  //   if (isUpdateError) {
-  //     toast({
-  //       variant: "destructive",
-  //       title: "Error",
-  //       description: "Terjadi kesalahan saat memperbarui lokasi buku",
-  //     });
-  //   }
-  // }, [isUpdateSuccess, isUpdateError]);
+    if (isUpdateError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat memperbarui lokasi buku",
+      });
+    }
+  }, [isUpdateSuccess, isUpdateError]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -119,8 +120,8 @@ export default function EditButton({ id }: { id: number }) {
               )}
             />
             <DialogFooter>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading && (
+              <Button type="submit" disabled={isLoading || isUpdateLoading}>
+                {(isLoading || isUpdateLoading) && (
                   <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
                 )}
                 Perbarui
