@@ -28,6 +28,7 @@ export const GET = async (
           id: id,
         },
         include: {
+          location: true,
           category: true,
         },
       });
@@ -56,6 +57,6 @@ export const GET = async (
       );
     }
   } else {
-    return NextResponse.json("Unauthorized", { status: 401 });
+    return NextResponse.json("Forbidden", { status: 403 });
   }
 };
