@@ -1,5 +1,5 @@
 import BookLocations from "@/components/dashboard/book-locations";
-import AddButton from "@/components/dashboard/categories/add-button";
+import AddButton from "@/components/dashboard/book-locations/add-button";
 import { currentUser } from "@clerk/nextjs";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -28,7 +28,9 @@ const page: FC = async () => {
             Daftar lokasi buku yang terdaftar di sistem.
           </p>
         </div>
-        <div className="flex items-center space-x-2">{/* <AddButton /> */}</div>
+        <div className="flex items-center space-x-2">
+          <AddButton />
+        </div>
       </div>
       <Suspense>
         <BookLocations />
