@@ -101,6 +101,16 @@ const BookDataDetail = ({ id }: TBookDataDetail): JSX.Element => {
                     </TableCell>
                   </TableRow>
                   <TableRow>
+                    <TableHead>Lokasi</TableHead>
+                    <TableCell>:</TableCell>
+                    <TableCell>{data.location.name}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableHead>Kategori</TableHead>
+                    <TableCell>:</TableCell>
+                    <TableCell>{data.category.name}</TableCell>
+                  </TableRow>
+                  <TableRow>
                     <TableHead>Tanggal Posting</TableHead>
                     <TableCell>:</TableCell>
                     <TableCell>{data.createdAt}</TableCell>
@@ -111,19 +121,21 @@ const BookDataDetail = ({ id }: TBookDataDetail): JSX.Element => {
               <div className="mt-6">
                 <h3 className="text-xl font-bold">Sinopsis</h3>
                 <p
-                  className={`mt-2 text-justify ${
+                  className={`mt-2 text-justify transition-all ${
                     isShowMore ? "" : "line-clamp-5"
                   }`}
                 >
                   {data.sinopsis}
                 </p>
-                <Button
-                  className={cn("mt-4")}
-                  variant="default"
-                  onClick={() => setIsShowMore((prev) => !prev)}
-                >
-                  {isShowMore ? "Lihat Lebih Sedikit" : "Lihat Lebih Banyak"}
-                </Button>
+                {data.sinopsis.length > 300 && (
+                  <Button
+                    className={cn("mt-4")}
+                    variant="default"
+                    onClick={() => setIsShowMore((prev) => !prev)}
+                  >
+                    {isShowMore ? "Lihat Lebih Sedikit" : "Lihat Lebih Banyak"}
+                  </Button>
+                )}
               </div>
             </div>
           </div>

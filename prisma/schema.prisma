@@ -36,6 +36,8 @@ model Book {
   stok       Int
   category   Category   @relation(fields: [categoryId], references: [id])
   categoryId Int
+  location   BookLocation @relation(fields: [locationId], references: [id])
+  locationId Int
   LoanBook   LoanBook[]
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
@@ -58,6 +60,14 @@ model LoanBook {
 }
 
 model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  books     Book[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BookLocation {
   id        Int      @id @default(autoincrement())
   name      String   @unique
   books     Book[]

@@ -1,11 +1,12 @@
 "use client";
 
-import { DataTableColumnHeader } from "@/components/dashboard/rooms/data-table-column-header";
-import { DataTableRowActions } from "@/components/dashboard/rooms/data-table-row-action";
+import { DataTableColumnHeader } from "@/components/dashboard/book-locations/data-table-column-header";
+import { DataTableRowActions } from "@/components/dashboard/book-locations/data-table-row-action";
+import { BookLocationsProps } from "@/lib/validator/dashboard/book-locations/api";
 import { Checkbox } from "@/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 
-export const columns: ColumnDef<any>[] = [
+export const columns: ColumnDef<BookLocationsProps>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -32,17 +33,7 @@ export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Nama Ruangan" />
-    ),
-    enableHiding: false,
-  },
-  {
-    accessorKey: "tersedia",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Ketersediaan Ruangan" />
-    ),
-    cell: ({ row }) => (
-      <div>{row.original.tersedia === true ? "Tersedia" : "Dipinjam"}</div>
+      <DataTableColumnHeader column={column} title="Nama Lokasi" />
     ),
     enableHiding: false,
   },

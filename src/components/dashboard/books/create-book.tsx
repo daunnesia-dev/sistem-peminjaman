@@ -36,6 +36,7 @@ import ImageUploader from "./image-uploader";
 import { bookFormSchema, yearNow } from "@/lib/validator/dashboard/books/api";
 import { storeBooks } from "@/helpers/dashboard/books/store-books";
 import { useRouter } from "next/navigation";
+import { getBookLocations } from "@/helpers/dashboard/book-locations/get-book-locations";
 
 interface HandleChangeProps {
   e: React.ChangeEvent<HTMLTextAreaElement>;
@@ -47,6 +48,7 @@ interface HandleChangeProps {
     | "penerbit"
     | "penulis"
     | "stok"
+    | "lokasiBuku"
     | "category";
   limit: number;
   setState: any;
@@ -54,7 +56,13 @@ interface HandleChangeProps {
 
 const CreateBook: FC = () => {
   const { data, isLoading, error } = getCategories();
+  const {
+    data: dataLokasi,
+    isLoading: isLoadingLokasi,
+    error: errorLokasi,
+  } = getBookLocations();
   const [categories, setCategories] = useState([{ id: "", name: "" }]);
+  const [lokasiBuku, setLokasiBuku] = useState([{ id: "", name: "" }]);
   const [coverImage, setCoverImage] = useState("");
   const form = useForm<z.infer<typeof bookFormSchema>>({
     resolver: zodResolver(bookFormSchema),
@@ -66,6 +74,7 @@ const CreateBook: FC = () => {
       penerbit: "",
       penulis: "",
       stok: "",
+      lokasiBuku: "",
       category: "",
     },
   });
@@ -110,6 +119,20 @@ const CreateBook: FC = () => {
       });
     }
   }, [data, error]);
+
+  useEffect(() => {
+    if (dataLokasi) {
+      setLokasiBuku(dataLokasi);
+    }
+
+    if (errorLokasi) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat mengambil data lokasi buku",
+      });
+    }
+  }, [dataLokasi, errorLokasi]);
 
   function onSubmit(values: z.infer<typeof bookFormSchema>) {
     mutateStore(values);
@@ -313,6 +336,46 @@ const CreateBook: FC = () => {
         />
         <FormField
           control={form.control}
+          name="lokasiBuku"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Lokasi Buku
+                <span className="ml-1 text-sm text-red-500 dark:text-red-400">
+                  *
+                </span>
+              </FormLabel>
+              <FormControl>
+                <div className={cn("space-y-4")}>
+                  {isLoadingLokasi && <p>Loading...</p>}
+                  {!isLoadingLokasi && (
+                    <Select onValueChange={field.onChange}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Lokasi Buku" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Lokasi</SelectLabel>
+                          {lokasiBuku.map((lokasi) => (
+                            <SelectItem
+                              key={`lokasi-${lokasi.id}`}
+                              value={lokasi.id.toString()}
+                            >
+                              {lokasi.name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                  <FormMessage />
+                </div>
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="category"
           render={({ field }) => (
             <FormItem>
@@ -355,8 +418,11 @@ const CreateBook: FC = () => {
           <Button variant="outline" asChild>
             <Link href="/dashboard/books">Kembali</Link>
           </Button>
-          <Button type="submit" disabled={isLoading || isLoadingStore}>
-            {(isLoading || isLoadingStore) && (
+          <Button
+            type="submit"
+            disabled={isLoading || isLoadingStore || isLoadingLokasi}
+          >
+            {(isLoading || isLoadingStore || isLoadingLokasi) && (
               <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
             )}
             Simpan

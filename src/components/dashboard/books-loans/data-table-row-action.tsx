@@ -4,6 +4,7 @@
 import DetailButton from "@/components/dashboard/books-loans/detail-button";
 import EditButton from "@/components/dashboard/books-loans/edit-button";
 import { batalkanBooksLoans } from "@/helpers/dashboard/books-loans/batalkan-books-loans";
+import { deleteBooksLoans } from "@/helpers/dashboard/books-loans/delete-books-loans";
 import { kembalikanBooksLoans } from "@/helpers/dashboard/books-loans/kembalikan-books-loans";
 import { updateDiterimaBooksLoans } from "@/helpers/dashboard/books-loans/update-diterima-books-loans";
 import { updateDitolakBooksLoans } from "@/helpers/dashboard/books-loans/update-ditolak-books-loans";
@@ -66,6 +67,12 @@ export function DataTableRowActions<TData>({
     isLoading: isKembalikanBooksLoansLoading,
     isError: isKembalikanBooksLoansError,
   } = kembalikanBooksLoans();
+  const {
+    isSuccess: isDeleteBooksLoansSuccess,
+    mutate: deleteBooksLoansById,
+    isLoading: isDeleteBooksLoansLoading,
+    isError: isDeleteBooksLoansError,
+  } = deleteBooksLoans();
 
   const handleUpdatePendingStatus = () => {
     updatePendingStatus({
@@ -93,6 +100,12 @@ export function DataTableRowActions<TData>({
 
   const handleKembalikanBooksLoans = () => {
     kembalikanBooksLoansById({
+      id: booksLoans.id,
+    });
+  };
+
+  const handleDeleteBooksLoans = () => {
+    deleteBooksLoansById({
       id: booksLoans.id,
     });
   };
@@ -172,6 +185,24 @@ export function DataTableRowActions<TData>({
   }, [isKembalikanBooksLoansSuccess, isKembalikanBooksLoansError]);
 
   useEffect(() => {
+    if (isDeleteBooksLoansSuccess) {
+      toast({
+        title: "Success",
+        description: "Penghapusan peminjaman buku berhasil.",
+      });
+      setOpen(false);
+    }
+
+    if (isDeleteBooksLoansError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat menghapus peminjaman buku.",
+      });
+    }
+  }, [isDeleteBooksLoansSuccess, isDeleteBooksLoansError]);
+
+  useEffect(() => {
     if (isUpdateDitolakStatusSuccess) {
       toast({
         title: "Success",
@@ -242,6 +273,15 @@ export function DataTableRowActions<TData>({
               {(booksLoans.status === "Diterima" ||
                 booksLoans.status === "Ditolak") &&
                 null}
+              <DropdownMenuItem
+                className={cn("hover:cursor-pointer")}
+                onClick={() => handleDeleteBooksLoans()}
+              >
+                {isDeleteBooksLoansLoading && (
+                  <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
+                )}
+                Delete
+              </DropdownMenuItem>
             </>
           )}
           {(!role || role !== "admin") && (

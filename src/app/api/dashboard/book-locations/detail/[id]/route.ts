@@ -1,29 +1,41 @@
 import { db } from "@/lib/db";
-import { ApiCategoriesResponseValidator } from "@/lib/validator/dashboard/categories/api";
-import { currentUser } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-export const GET = async (req: NextRequest) => {
+export const GET = async (
+  req: NextRequest,
+  {
+    params,
+  }: {
+    params: {
+      id: number;
+    };
+  }
+) => {
   const user = await currentUser();
   if (!user) {
     return NextResponse.json("Unauthorized", { status: 401 });
   }
 
   const role = user?.publicMetadata.role;
+  const id = parseInt(params.id.toString());
+
   if (role === "admin") {
     try {
-      const categories = await db.category.findMany({
-        orderBy: {
-          createdAt: "asc",
+      const bookLocations = await db.bookLocation.findUnique({
+        where: {
+          id: id,
         },
       });
-      const response = ApiCategoriesResponseValidator.parse({
-        error: null,
-        data: categories,
-      });
 
-      return NextResponse.json(response, { status: 200 });
+      return NextResponse.json(
+        {
+          error: null,
+          data: bookLocations,
+        },
+        { status: 201 }
+      );
     } catch (error) {
       if (error instanceof z.ZodError) {
         return NextResponse.json(

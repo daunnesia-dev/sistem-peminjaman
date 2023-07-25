@@ -23,6 +23,7 @@ import { DotsHorizontalIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import EditButton from "./edit-button";
+import { deleteRoomsLoans } from "@/helpers/dashboard/rooms-loans/delete-rooms-loans";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -66,6 +67,12 @@ export function DataTableRowActions<TData>({
     isLoading: isKembalikanRoomsLoansLoading,
     isError: isKembalikanRoomsLoansError,
   } = kembalikanRoomsLoans();
+  const {
+    isSuccess: isDeleteRoomsLoansSuccess,
+    mutate: deleteRoomsLoansById,
+    isLoading: isDeleteRoomsLoansLoading,
+    isError: isDeleteRoomsLoansError,
+  } = deleteRoomsLoans();
 
   const handleUpdatePendingStatus = () => {
     updatePendingStatus({
@@ -93,6 +100,12 @@ export function DataTableRowActions<TData>({
 
   const handleKembalikanRoomsLoans = () => {
     kembalikanRoomsLoansById({
+      id: roomsLoans.id,
+    });
+  };
+
+  const handleDeleteRoomsLoans = () => {
+    deleteRoomsLoansById({
       id: roomsLoans.id,
     });
   };
@@ -172,6 +185,24 @@ export function DataTableRowActions<TData>({
   }, [isBatalkanRoomsLoansSuccess, isBatalkanRoomsLoansError]);
 
   useEffect(() => {
+    if (isDeleteRoomsLoansSuccess) {
+      toast({
+        title: "Success",
+        description: "Penghapusan peminjaman ruangan berhasil.",
+      });
+      setOpen(false);
+    }
+
+    if (isDeleteRoomsLoansError) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Terjadi kesalahan saat menghapus peminjaman ruangan.",
+      });
+    }
+  }, [isDeleteRoomsLoansSuccess, isDeleteRoomsLoansError]);
+
+  useEffect(() => {
     if (isKembalikanRoomsLoansSuccess) {
       toast({
         title: "Success",
@@ -241,6 +272,15 @@ export function DataTableRowActions<TData>({
               {(roomsLoans.status === "Diterima" ||
                 roomsLoans.status === "Ditolak") &&
                 null}
+              <DropdownMenuItem
+                className={cn("hover:cursor-pointer")}
+                onClick={() => handleDeleteRoomsLoans()}
+              >
+                {isDeleteRoomsLoansLoading && (
+                  <ReloadIcon className="w-3 h-3 mr-2 animate-spin" />
+                )}
+                Delete
+              </DropdownMenuItem>
             </>
           )}
           {(!role || role !== "admin") && (

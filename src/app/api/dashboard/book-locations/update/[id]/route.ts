@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { ApiBooksRequestValidator } from "@/lib/validator/dashboard/books/api";
+import { ApiBookLocationsRequestValidator } from "@/lib/validator/dashboard/book-locations/api";
 import { currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -24,42 +24,30 @@ export const PUT = async (
   if (role === "admin") {
     try {
       const body = await req.json();
-      const {
-        coverImage,
-        judul,
-        sinopsis,
-        tahun,
-        penerbit,
-        penulis,
-        stok,
-        lokasiBuku,
-        category,
-      } = ApiBooksRequestValidator.parse(body);
-      const intTahun = parseInt(tahun);
-      const intStok = parseInt(stok);
-      const intLokasiBuku = parseInt(lokasiBuku);
-      const intCategory = parseInt(category);
-      const books = await db.book.update({
+      const { name } = ApiBookLocationsRequestValidator.parse(body);
+      const isExistBookLocations = await db.bookLocation.findFirst({
+        where: {
+          name,
+        },
+      });
+
+      if (isExistBookLocations) {
+        return NextResponse.json("Duplicate entry", { status: 409 });
+      }
+
+      const bookLocations = await db.bookLocation.update({
         where: {
           id: id,
         },
         data: {
-          coverImage,
-          judul,
-          sinopsis,
-          tahun: intTahun,
-          penerbit,
-          penulis,
-          stok: intStok,
-          locationId: intLokasiBuku,
-          categoryId: intCategory,
+          name,
         },
       });
 
       return NextResponse.json(
         {
           error: null,
-          data: books,
+          data: bookLocations,
         },
         { status: 201 }
       );

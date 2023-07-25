@@ -42,6 +42,9 @@ export const createBooksProps = z.object({
     .nonempty({ message: "Stok buku tidak boleh kosong" })
     .min(1, { message: "Stok buku minimal 1" })
     .regex(/^[1-9]\d*$/, { message: "Stok buku tidak boleh 0" }),
+  lokasiBuku: z
+    .string()
+    .nonempty({ message: "Lokasi buku tidak boleh kosong" }),
   category: z
     .string()
     .nonempty({ message: "Kategori buku tidak boleh kosong" }),
@@ -88,6 +91,9 @@ export const bookFormSchema = z.object({
     .nonempty({ message: "Stok buku tidak boleh kosong" })
     .min(1, { message: "Stok buku minimal 1" })
     .regex(/^[1-9]\d*$/, { message: "Stok buku tidak boleh 0" }),
+  lokasiBuku: z
+    .string()
+    .nonempty({ message: "Lokasi buku tidak boleh kosong" }),
   category: z
     .string()
     .nonempty({ message: "Kategori buku tidak boleh kosong" }),

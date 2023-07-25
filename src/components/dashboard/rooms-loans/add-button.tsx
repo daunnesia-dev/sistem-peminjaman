@@ -107,6 +107,8 @@ export default function AddButton() {
   }, [data, error]);
 
   function onSubmit(values: z.infer<typeof roomLoansFormSchema>) {
+    const tanggalKembali = new Date(values.tanggalKembali);
+    values = { ...values, tanggalKembali };
     mutateStore(values);
     form.reset();
     setKeterangan("");
@@ -158,37 +160,37 @@ export default function AddButton() {
                       *
                     </span>
                   </FormLabel>
-                  <FormControl>
-                    <div className={cn("space-y-4")}>
-                      {isLoading && <p>Loading...</p>}
-                      {!isLoading && (
-                        <Select onValueChange={field.onChange}>
+                  <div className={cn("space-y-4")}>
+                    {isLoading && <p>Loading...</p>}
+                    {!isLoading && (
+                      <Select onValueChange={field.onChange}>
+                        <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Ruangan" />
                           </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              {rooms.length === 0 && (
-                                <SelectLabel>Ruangan tidak tersedia</SelectLabel>
-                              )}
-                              {rooms.length > 0 && (
-                                <SelectLabel>Ruangan</SelectLabel>
-                              )}
-                              {rooms.map((room) => (
-                                <SelectItem
-                                  key={`ruangan-${room.id}`}
-                                  value={room.id.toString()}
-                                >
-                                  {room.name}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                      )}
-                      <FormMessage />
-                    </div>
-                  </FormControl>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectGroup>
+                            {rooms.length === 0 && (
+                              <SelectLabel>Ruangan tidak tersedia</SelectLabel>
+                            )}
+                            {rooms.length > 0 && (
+                              <SelectLabel>Ruangan</SelectLabel>
+                            )}
+                            {rooms.map((room) => (
+                              <SelectItem
+                                key={`ruangan-${room.id}`}
+                                value={room.id.toString()}
+                              >
+                                {room.name}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
