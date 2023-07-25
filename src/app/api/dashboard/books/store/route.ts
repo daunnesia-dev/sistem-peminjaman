@@ -1,6 +1,5 @@
 import { db } from "@/lib/db";
 import { ApiBooksRequestValidator } from "@/lib/validator/dashboard/books/api";
-import { ApiRoomsRequestValidator } from "@/lib/validator/dashboard/rooms/api";
 import { currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -22,10 +21,12 @@ export const POST = async (req: NextRequest) => {
         penerbit,
         penulis,
         stok,
+        lokasiBuku,
         category,
       } = ApiBooksRequestValidator.parse(body);
       const intTahun = parseInt(tahun);
       const intStok = parseInt(stok);
+      const intLokasiBuku = parseInt(lokasiBuku);
       const intCategory = parseInt(category);
       const books = await db.book.create({
         data: {
@@ -36,6 +37,7 @@ export const POST = async (req: NextRequest) => {
           penerbit,
           penulis,
           stok: intStok,
+          locationId: intLokasiBuku,
           categoryId: intCategory,
         },
       });
@@ -51,6 +53,6 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json("Unprocessable entity", { status: 422 });
     }
   } else {
-    return NextResponse.json("Unauthorized", { status: 401 });
+    return NextResponse.json("Forbidden", { status: 403 });
   }
 };
