@@ -23,6 +23,8 @@ export const GET = async (
     const book = await db.book.findUnique({
       where: { id },
       include: {
+        location: true,
+        category: true,
         LoanBook: true,
       },
     });
