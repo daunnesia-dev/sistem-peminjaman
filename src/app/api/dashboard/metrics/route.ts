@@ -19,6 +19,7 @@ export const GET = async (req: NextRequest) => {
   if (role === "admin") {
     try {
       const user_count = await clerkClient.users.getCount();
+      const bookLoc_count = await db.bookLocation.count();
       const category_count = await db.category.count();
       const statuses_count = await db.statuses.count();
       const books_count = await db.book.count();
@@ -29,6 +30,7 @@ export const GET = async (req: NextRequest) => {
         error: null,
         data: {
           user_count,
+          bookLoc_count,
           category_count,
           statuses_count,
           books_count,

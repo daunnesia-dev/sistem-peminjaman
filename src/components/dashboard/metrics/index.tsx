@@ -13,7 +13,8 @@ import {
   HomeIcon,
   LightningBoltIcon,
   PersonIcon,
-  ReloadIcon
+  ReloadIcon,
+  SewingPinIcon,
 } from "@radix-ui/react-icons";
 
 const Metrics = (role: any) => {
@@ -57,10 +58,10 @@ const Metrics = (role: any) => {
                 }
               />
               <MetricsCard
-                title="Total Status"
-                value={data.statuses_count}
+                title="Total Lokasi"
+                value={data.bookLoc_count}
                 Icon={
-                  <LightningBoltIcon className="w-4 h-4 text-muted-foreground" />
+                  <SewingPinIcon className="w-4 h-4 text-muted-foreground" />
                 }
               />
               <MetricsCard
@@ -74,6 +75,13 @@ const Metrics = (role: any) => {
                 title="Total Ruangan"
                 value={data.rooms_count}
                 Icon={<HomeIcon className="w-4 h-4 text-muted-foreground" />}
+              />
+              <MetricsCard
+                title="Total Status"
+                value={data.statuses_count}
+                Icon={
+                  <LightningBoltIcon className="w-4 h-4 text-muted-foreground" />
+                }
               />
               <MetricsCard
                 title="Total Pinjam Buku"
