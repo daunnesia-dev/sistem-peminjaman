@@ -32,10 +32,12 @@ export const PUT = async (
         penerbit,
         penulis,
         stok,
+        lokasiBuku,
         category,
       } = ApiBooksRequestValidator.parse(body);
       const intTahun = parseInt(tahun);
       const intStok = parseInt(stok);
+      const intLokasiBuku = parseInt(lokasiBuku);
       const intCategory = parseInt(category);
       const books = await db.book.update({
         where: {
@@ -49,6 +51,7 @@ export const PUT = async (
           penerbit,
           penulis,
           stok: intStok,
+          locationId: intLokasiBuku,
           categoryId: intCategory,
         },
       });
@@ -64,6 +67,6 @@ export const PUT = async (
       return NextResponse.json("Unprocessable entity", { status: 422 });
     }
   } else {
-    return NextResponse.json("Unauthorized", { status: 401 });
+    return NextResponse.json("Forbidden", { status: 403 });
   }
 };
