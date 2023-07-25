@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { ApiCategoriesResponseValidator } from "@/lib/validator/dashboard/categories/api";
+import { ApiBookLocationsResponseValidator } from "@/lib/validator/dashboard/book-locations/api";
 import { currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -13,14 +13,14 @@ export const GET = async (req: NextRequest) => {
   const role = user?.publicMetadata.role;
   if (role === "admin") {
     try {
-      const categories = await db.category.findMany({
+      const bookLocations = await db.bookLocation.findMany({
         orderBy: {
           createdAt: "asc",
         },
       });
-      const response = ApiCategoriesResponseValidator.parse({
+      const response = ApiBookLocationsResponseValidator.parse({
         error: null,
-        data: categories,
+        data: bookLocations,
       });
 
       return NextResponse.json(response, { status: 200 });
