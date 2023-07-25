@@ -1,3 +1,4 @@
+import Banner from "@/components/banner";
 import Providers from "@/components/providers";
 import { SITE } from "@/config";
 import { cn } from "@/lib/utils";
@@ -42,6 +43,7 @@ export default function RootLayout({
             <NextTopLoader height={5} />
             {children}
             <Toaster />
+            <Banner />
           </Providers>
         </body>
       </html>
